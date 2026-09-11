@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>AgriScan | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+              "tertiary": "#3a2017",
+              "on-secondary-container": "#1b724f",
+              "on-primary-fixed": "#002114",
+              "surface-variant": "#e1e3e4",
+              "primary-fixed-dim": "#a5d0b9",
+              "outline": "#717973",
+              "on-primary-fixed-variant": "#274e3d",
+              "surface-container-highest": "#e1e3e4",
+              "on-tertiary": "#ffffff",
+              "outline-variant": "#c1c8c2",
+              "surface-bright": "#f8f9fa",
+              "secondary-fixed": "#a1f4c8",
+              "inverse-primary": "#a5d0b9",
+              "on-background": "#191c1d",
+              "on-tertiary-fixed": "#2d150d",
+              "on-primary": "#ffffff",
+              "inverse-surface": "#2e3132",
+              "surface-dim": "#d9dadb",
+              "inverse-on-surface": "#f0f1f2",
+              "background": "#f8f9fa",
+              "tertiary-fixed": "#ffdbcf",
+              "tertiary-container": "#52352b",
+              "on-primary-container": "#86af99",
+              "on-surface-variant": "#414844",
+              "primary-container": "#1b4332",
+              "surface-container-low": "#f3f4f5",
+              "primary": "#012d1d",
+              "on-error": "#ffffff",
+              "surface-tint": "#3f6653",
+              "primary-fixed": "#c1ecd4",
+              "surface": "#f8f9fa",
+              "error": "#ba1a1a",
+              "on-tertiary-fixed-variant": "#5e3f35",
+              "error-container": "#ffdad6",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#86d7ad",
+              "secondary": "#116c4a",
+              "on-tertiary-container": "#c79d90",
+              "secondary-container": "#a1f4c8",
+              "surface-container": "#edeeef",
+              "on-secondary-fixed": "#002113",
+              "on-secondary-fixed-variant": "#005236",
+              "surface-container-high": "#e7e8e9",
+              "on-error-container": "#93000a",
+              "on-secondary": "#ffffff",
+              "tertiary-fixed-dim": "#e9bdae",
+              "on-surface": "#191c1d"
+            },
+            "borderRadius": {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "9999px"
+            },
+            "spacing": {
+              "unit": "8px",
+              "container-margin-desktop": "64px",
+              "gutter": "16px",
+              "container-margin-mobile": "16px",
+              "touch-target-min": "48px"
+            },
+            "fontFamily": {
+              "display-lg": ["Inter"],
+              "body-lg": ["Inter"],
+              "headline-lg-mobile": ["Inter"],
+              "headline-lg": ["Inter"],
+              "caption": ["Inter"],
+              "title-md": ["Inter"],
+              "body-md": ["Inter"],
+              "label-md": ["Inter"]
+            },
+            "fontSize": {
+              "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+              "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+              "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+              "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+              "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+              "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+              "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+              "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(224, 224, 224, 0.5);
+        }
+        .spore-gradient {
+            background: linear-gradient(135deg, #012d1d 0%, #1b4332 100%);
+        }
+        
+        /* Custom dropdown menu styling */
+        .notif-dropdown {
+            position: absolute;
+            top: 44px;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #c1c8c2;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(1, 45, 29, 0.12);
+            width: 320px;
+            z-index: 50;
+            display: none;
+        }
+        .notif-dropdown.show {
+            display: block;
+        }
+        
+        /* Bar chart hover tooltip styling */
+        .bar-tooltip {
+            position: absolute;
+            bottom: 105%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #012d1d;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 6px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.15s ease-in-out;
+            z-index: 30;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .group:hover .bar-tooltip {
+            opacity: 1;
+        }
+        
+        /* Custom Toast Notification styles */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .toast-card {
+            background: #ffffff;
+            color: #191c1d;
+            border-left: 6px solid #116c4a;
+            box-shadow: 0 4px 12px rgba(1, 45, 29, 0.15);
+            padding: 16px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: auto;
+            max-width: 320px;
+        }
+        .toast-card.show {
+            transform: translateX(0);
+        }
+        .toast-card.error {
+            border-left-color: #ba1a1a;
+        }
+        /* === Smooth Page Transition === */
+        @keyframes pageEntrance {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        body {
+            animation: pageEntrance 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        .page-exit {
+            animation: pageExit 0.25s ease-in forwards !important;
+        }
+        @keyframes pageExit {
+            to { opacity: 0; transform: translateY(-8px); }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- SideNavBar Component -->
+        <aside class="hidden md:flex flex-col h-full py-unit overflow-y-auto bg-surface-container-low border-r border-outline-variant w-72 shrink-0">
+            <div class="px-6 mb-8 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">eco</span>
+                    </div>
+                    <div>
+                        <h2 class="font-title-md text-title-md font-bold text-primary">AgriScan Pro</h2>
+                        <p class="font-caption text-caption text-on-surface-variant">Connectivity: Online</p>
+                    </div>
+                </div>
+                <a href="../index.html" class="text-xs bg-secondary-container text-on-secondary-container px-2.5 py-1 rounded-full font-bold hover:opacity-90 transition-opacity">
+                    Hub
+                </a>
+            </div>
+            <nav class="flex-1 px-4 space-y-1">
+                <!-- Active Tab: Dashboard -->
+                <a class="bg-primary-container text-on-primary-container font-bold rounded-lg px-4 py-3 flex items-center gap-3 active:scale-95 transition-transform duration-200" href="../agriscan_dashboard/code.html">
+                    <span class="material-symbols-outlined" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+                    <span class="font-label-md text-label-md">Dashboard</span>
+                </a>
+                <a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container hover:text-on-secondary-container transition-all rounded-lg" href="../scan_portal/code.html">
+                    <span class="material-symbols-outlined" data-icon="camera">camera</span>
+                    <span class="font-label-md text-label-md">Scan Portal</span>
+                </a>
+                <a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container hover:text-on-secondary-container transition-all rounded-lg" href="../history_log/code.html">
+                    <span class="material-symbols-outlined" data-icon="history">history</span>
+                    <span class="font-label-md text-label-md">History Log</span>
+                </a>
+                <a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container hover:text-on-secondary-container transition-all rounded-lg" href="../treatment_guides/code.html">
+                    <span class="material-symbols-outlined" data-icon="healing">healing</span>
+                    <span class="font-label-md text-label-md">Treatment Guides</span>
+                </a>
+            </nav>
+            <div class="px-4 mt-auto space-y-1 border-t border-outline-variant pt-4">
+                <a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-variant transition-colors rounded-lg" href="../index.html">
+                    <span class="material-symbols-outlined" data-icon="apps">apps</span>
+                    <span class="font-label-md text-label-md">Portal Hub Directory</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col min-w-0 bg-background overflow-y-auto">
+            <!-- TopAppBar Component -->
+            <header class="flex justify-between items-center w-full px-4 md:px-16 h-touch-target-min bg-surface shadow-sm sticky top-0 z-10 border-b border-outline-variant/30">
+                <div class="flex items-center gap-gutter">
+                    <a href="../index.html" class="md:hidden text-xs bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-bold">← Hub</a>
+                    <h1 class="font-headline-lg text-headline-lg font-bold text-primary">Dashboard</h1>
+                </div>
+                <div class="flex items-center gap-4 relative">
+                    <button id="dash-lang-btn" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors">
+                        <span class="material-symbols-outlined text-primary" data-icon="language">language</span>
+                    </button>
+                    <div class="relative">
+                        <button id="dash-notif-btn" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors relative">
+                            <span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+                            <span id="dash-notif-dot" class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface animate-pulse"></span>
+                        </button>
+                        <!-- Notifications Dropdown -->
+                        <div id="dash-notif-dropdown" class="notif-dropdown bg-white border border-outline-variant p-4 flex flex-col gap-3 text-left">
+                            <div class="flex justify-between items-center border-b border-outline-variant/30 pb-2">
+                                <span class="font-bold text-primary text-sm" id="notif-title">Recent Alerts</span>
+                                <button class="text-xs text-secondary font-bold hover:underline" onclick="clearNotifications()" id="notif-clear">Clear All</button>
+                            </div>
+                            <div class="flex flex-col gap-2 max-h-48 overflow-y-auto" id="notif-list">
+                                <div class="p-2 hover:bg-surface-container-low rounded-lg transition-colors flex items-start gap-2.5 text-xs text-on-surface-variant relative group/item" id="notif-item-1">
+                                    <span class="material-symbols-outlined text-error text-[18px]">warning</span>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-primary" id="notif-msg-1">High Spore alert in Field A-12</p>
+                                        <p class="opacity-60 text-[10px]" id="notif-time-1">10 mins ago</p>
+                                    </div>
+                                    <button class="material-symbols-outlined text-[14px] hover:text-primary cursor-pointer opacity-0 group-hover/item:opacity-100 transition-opacity" onclick="dismissNotif('notif-item-1')">close</button>
+                                </div>
+                                <div class="p-2 hover:bg-surface-container-low rounded-lg transition-colors flex items-start gap-2.5 text-xs text-on-surface-variant relative group/item" id="notif-item-2">
+                                    <span class="material-symbols-outlined text-secondary text-[18px]">cloud_sync</span>
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-primary" id="notif-msg-2">3 Offline scans synced successfully</p>
+                                        <p class="opacity-60 text-[10px]" id="notif-time-2">1 hour ago</p>
+                                    </div>
+                                    <button class="material-symbols-outlined text-[14px] hover:text-primary cursor-pointer opacity-0 group-hover/item:opacity-100 transition-opacity" onclick="dismissNotif('notif-item-2')">close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-8 h-8 rounded-full border border-outline-variant overflow-hidden cursor-pointer active:scale-95 transition-transform" onclick="window.location.href='../login/code.html';" title="Logout">
+                        <img alt="User profile" class="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-aQd_LJY9TFwTls_xlZa7Q4B6gy2MiE7gRaItS-EcOWI223FsG9UyE0UST5SnNvP8H55b4FrMQsrnbYtV9RcISi8eGcwZEw9RRicq0jtjqBIadrjHQs9fus-uoSxZXia6CRc0JToMgj58Q3PFzwAyNlkVuCdASix3oUW-iPRMtDdqfYQ8NdQ9KL1TrQgZSH57YaUUp4KgCaJH0JTEKuX75C-ZXZfOr0B_wAoVAf9GK_IWyiqsRTBfBHuFJioLVeZwr9ClMbi7NA"/>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Body -->
+            <div class="p-4 md:p-16 space-y-4 max-w-[1280px] mx-auto w-full pb-24 md:pb-4">
+                
+                <!-- Hero Welcome Widget -->
+                <div class="relative bg-gradient-to-br from-primary to-primary-container text-white p-8 rounded-2xl shadow-md overflow-hidden">
+                    <div class="absolute right-0 bottom-0 opacity-[0.07] pointer-events-none" style="background-image: radial-gradient(#ffffff 2px, transparent 2px); background-size: 24px 24px; width: 40%; height: 100%;"></div>
+                    <div class="relative z-10 max-w-2xl">
+                        <span class="bg-secondary-container/20 text-secondary-fixed text-xs px-3.5 py-1 rounded-full font-bold uppercase tracking-wider mb-3 inline-block border border-secondary-container/20">Active Season - Kharif</span>
+                        <h3 class="text-2xl md:text-3xl font-extrabold tracking-tight mb-2">Welcome Back, Rajappa</h3>
+                        <p class="text-white/80 text-sm md:text-base mb-6 leading-relaxed">Your farm health is generally stable. You have 3 active disease alerts that require immediate field intervention.</p>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="window.location.href='../scan_portal/code.html'" class="bg-secondary hover:shadow-lg transition-all active:scale-[0.98] text-white font-bold px-6 py-2.5 rounded-xl text-sm flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+                                <span>Start Field Scan</span>
+                            </button>
+                            <button onclick="window.location.href='../history_log/code.html'" class="bg-white/10 hover:bg-white/20 text-white font-bold px-5 py-2.5 rounded-xl transition-all text-sm border border-white/20">
+                                <span>View History Log</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bento Grid Summary Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    
+                    <!-- Card 1: Farm Health Index -->
+                    <div class="glass-card p-5 rounded-2xl flex flex-col justify-between hover:shadow-md transition-all group">
+                        <div class="flex justify-between items-start">
+                            <span class="material-symbols-outlined text-secondary text-3xl bg-secondary-container p-2 rounded-xl group-hover:scale-110 transition-transform">health_and_safety</span>
+                            <span class="text-secondary font-extrabold text-2xl">84%</span>
+                        </div>
+                        <div class="mt-4">
+                            <h4 class="font-bold text-primary text-[16px]">Farm Health Index</h4>
+                            <p class="text-xs text-on-surface-variant mt-1">Weighted metric across 4 active parcels.</p>
+                            <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-3 overflow-hidden">
+                                <div class="bg-secondary h-full w-[84%] rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Scans Logged -->
+                    <div class="glass-card p-5 rounded-2xl flex flex-col justify-between hover:shadow-md transition-all group">
+                        <div class="flex justify-between items-start">
+                            <span class="material-symbols-outlined text-primary text-3xl bg-primary-fixed p-2 rounded-xl group-hover:scale-110 transition-transform">history_edu</span>
+                            <span class="text-primary font-extrabold text-2xl">152</span>
+                        </div>
+                        <div class="mt-4">
+                            <h4 class="font-bold text-primary text-[16px]">Total Scans Logged</h4>
+                            <p class="text-xs text-on-surface-variant mt-1">+14 scans performed this week.</p>
+                            <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-3 overflow-hidden">
+                                <div class="bg-primary h-full w-[70%] rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Pending Sync (Offline support) -->
+                    <div class="glass-card p-5 rounded-2xl flex flex-col justify-between hover:shadow-md transition-all group relative overflow-hidden" id="dash-sync-card">
+                        <div class="flex justify-between items-start">
+                            <span class="material-symbols-outlined text-tertiary text-3xl bg-tertiary-fixed p-2 rounded-xl group-hover:scale-110 transition-transform" id="dash-sync-icon">cloud_sync</span>
+                            <span class="text-tertiary font-extrabold text-2xl" id="dash-pending-count">3</span>
+                        </div>
+                        <div class="mt-4">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-bold text-primary text-[16px]">Offline Scans Queue</h4>
+                                <button id="dash-sync-btn" class="text-xs text-secondary font-bold hover:underline">Sync Now</button>
+                            </div>
+                            <p class="text-xs text-on-surface-variant mt-1" id="dash-sync-text">Scans performed in remote fields offline.</p>
+                            <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-3 overflow-hidden">
+                                <div class="bg-tertiary h-full w-[35%] rounded-full transition-all duration-1000" id="dash-sync-progress"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Active Alerts -->
+                    <div class="glass-card p-5 rounded-2xl flex flex-col justify-between hover:shadow-md transition-all group border-l-4 border-l-error">
+                        <div class="flex justify-between items-start">
+                            <span class="material-symbols-outlined text-error text-3xl bg-error-container p-2 rounded-xl group-hover:scale-110 transition-transform">priority_high</span>
+                            <span class="text-error font-extrabold text-2xl">12</span>
+                        </div>
+                        <div class="mt-4">
+                            <h4 class="font-bold text-primary text-[16px]">Active Alerts</h4>
+                            <p class="text-xs text-on-surface-variant mt-1">Requires biological/chemical action.</p>
+                            <div class="w-full bg-surface-container-high h-1.5 rounded-full mt-3 overflow-hidden">
+                                <div class="bg-error h-full w-[45%] rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Layout Grid: Data Visuals & Weather advisory -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Chart widget -->
+                    <div class="lg:col-span-2 bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h3 class="font-bold text-primary text-lg">Diagnostic Scan Velocity</h3>
+                                    <p class="text-xs text-on-surface-variant">Scanning counts and detected disease incidence over the last week</p>
+                                </div>
+                                <select class="text-xs font-semibold bg-surface border border-outline-variant rounded-lg px-2 py-1.5 focus:ring-1 focus:ring-primary focus:outline-none">
+                                    <option>Last 7 Days</option>
+                                    <option>Last 30 Days</option>
+                                </select>
+                            </div>
+                            <!-- Bar Chart Visual representation -->
+                            <div class="h-48 flex items-end justify-between px-2 relative border-b border-outline-variant/30 pb-2">
+                                <div class="absolute inset-x-0 top-0 h-0.5 border-t border-dashed border-outline-variant/10"></div>
+                                <div class="absolute inset-x-0 top-1/3 h-0.5 border-t border-dashed border-outline-variant/10"></div>
+                                <div class="absolute inset-x-0 top-2/3 h-0.5 border-t border-dashed border-outline-variant/10"></div>
+                                
+                                <div class="flex flex-col items-center w-12 group cursor-pointer z-10 relative">
+                                    <div class="bar-tooltip">Mon: 14 scans, 2 alerts</div>
+                                    <div class="w-6 bg-gradient-to-t from-primary-container to-primary h-24 rounded-t-md relative">
+                                        <div class="absolute inset-x-0 bottom-0 bg-error/70 h-8 rounded-t-sm"></div>
+                                    </div>
+                                    <span class="text-xs text-on-surface-variant mt-2 font-medium">Mon</span>
+                                </div>
+                                <div class="flex flex-col items-center w-12 group cursor-pointer z-10 relative">
+                                    <div class="bar-tooltip">Tue: 18 scans, 1 alert</div>
+                                    <div class="w-6 bg-gradient-to-t from-primary-container to-primary h-32 rounded-t-md relative">
+                                        <div class="absolute inset-x-0 bottom-0 bg-error/70 h-4 rounded-t-sm"></div>
+                                    </div>
+                                    <span class="text-xs text-on-surface-variant mt-2 font-medium">Tue</span>
+                                </div>
+                                <div class="flex flex-col items-center w-12 group cursor-pointer z-10 relative">
+                                    <div class="bar-tooltip">Wed: 24 scans, 5 alerts</div>
+                                    <div class="w-6 bg-gradient-to-t from-primary-container to-primary h-40 rounded-t-md relative">
+                                        <div class="absolute inset-x-0 bottom-0 bg-error/70 h-16 rounded-t-sm animate-pulse"></div>
+                                    </div>
+                                    <span class="text-xs text-on-surface-variant mt-2 font-medium">Wed</span>
+                                </div>
+                                <div class="flex flex-col items-center w-12 group cursor-pointer z-10 relative">
+                                    <div class="bar-tooltip">Thu: 8 scans, 0 alerts</div>
+                                    <div class="w-6 bg-gradient-to-t from-primary-container to-primary h-16 rounded-t-md relative"></div>
+                                    <span class="text-xs text-on-surface-variant mt-2 font-medium">Thu</span>
+                                </div>
+                                <div class="flex flex-col items-center w-12 group cursor-pointer z-10 relative">
+                                    <div class="bar-tooltip">Fri: 16 scans, 1 alert</div>
+                                    <div class="w-6 bg-gradient-to-t from-primary-container to-primary h-28 rounded-t-md relative">
+                                        <div class="absolute inset-x-0 bottom-0 bg-error/70 h-4 rounded-t-sm"></div>
+                                    </div>
+                                    <span class="text-xs text-on-surface-variant mt-2 font-medium">Fri</span>
+                                </div>
+                                <div class="flex flex-col items-center w-12 group cursor-pointer z-10 relative">
+                                    <div class="bar-tooltip">Sat: 28 scans, 7 alerts</div>
+                                    <div class="w-6 bg-gradient-to-t from-primary-container to-primary h-44 rounded-t-md relative">
+                                        <div class="absolute inset-x-0 bottom-0 bg-error/70 h-24 rounded-t-sm"></div>
+                                    </div>
+                                    <span class="text-xs text-on-surface-variant mt-2 font-medium">Sat</span>
+                                </div>
+                                <div class="flex flex-col items-center w-12 group cursor-pointer z-10 relative">
+                                    <div class="bar-tooltip">Sun: 14 scans, 2 alerts</div>
+                                    <div class="w-6 bg-gradient-to-t from-primary-container to-primary h-24 rounded-t-md relative">
+                                        <div class="absolute inset-x-0 bottom-0 bg-error/70 h-8 rounded-t-sm"></div>
+                                    </div>
+                                    <span class="text-xs text-on-surface-variant mt-2 font-medium">Sun</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-center justify-center mt-4 text-xs font-semibold text-on-surface-variant">
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-primary rounded-full"></span> Total Scans Run</span>
+                            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-error rounded-full"></span> Disease Instances Detected</span>
+                        </div>
+                    </div>
+
+                    <!-- Weather / Environmental Card -->
+                    <div class="bg-surface-container-lowest p-6 rounded-2xl border border-outline-variant shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <h3 class="font-bold text-primary text-lg">Weather &amp; Spores</h3>
+                                <span class="text-[11px] text-tertiary font-bold bg-tertiary-fixed px-2 py-0.5 rounded uppercase">Humidity Alert</span>
+                            </div>
+                            <div class="flex items-center gap-4 mb-5">
+                                <span class="material-symbols-outlined text-secondary text-[48px]">partly_sunny</span>
+                                <div>
+                                    <div class="text-2xl font-black text-primary">31°C</div>
+                                    <div class="text-xs text-on-surface-variant font-medium">Humidity 88% • Wind SSE 14km/h</div>
+                                </div>
+                            </div>
+                            <div class="space-y-3.5 text-xs text-on-surface-variant">
+                                <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+                                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-secondary">rainy</span> Spore Growth Index</span>
+                                    <span class="font-bold text-error">Critical High</span>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+                                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-secondary">agriculture</span> Dew Point Risk</span>
+                                    <span class="font-bold text-secondary">Medium</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[16px] text-secondary">wb_sunny</span> Solar Radiation</span>
+                                    <span class="font-bold">4.2 kW/m²</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-5 p-3.5 bg-primary-container/20 text-primary rounded-xl text-xs flex gap-3 border border-primary-container/10">
+                            <span class="material-symbols-outlined text-[20px] shrink-0 text-secondary">info</span>
+                            <p class="leading-relaxed"><strong>Fungal Advisory:</strong> High moisture forecast. Apply preventive organic copper soap to solanaceous fields.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer Component -->
+            <footer class="mt-auto bg-surface-container-highest border-t border-outline-variant flex flex-col md:flex-row justify-between items-center px-container-margin-desktop py-unit gap-gutter w-full">
+                <div class="font-caption text-caption text-on-surface-variant">
+                    © 2024 AgriScan Management Systems. v2.4.1-stable
+                </div>
+                <div class="flex gap-gutter">
+                    <a class="font-caption text-caption text-on-surface-variant hover:text-primary underline transition-colors" href="#">Privacy Policy</a>
+                    <a class="font-caption text-caption text-on-surface-variant hover:text-primary underline transition-colors" href="#">Terms of Service</a>
+                    <a class="font-caption text-caption text-on-surface-variant hover:text-primary underline transition-colors" href="#">Field Guides</a>
+                    <a class="font-caption text-caption text-on-surface-variant hover:text-primary underline transition-colors" href="#">Contact Expert</a>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Scripting for interactions -->
+<script>
+        // Global Toast Notification Helper
+        window.showToast = function(message, type = 'success') {
+            let container = document.getElementById('global-toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'global-toast-container';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+            
+            const card = document.createElement('div');
+            card.className = `toast-card ${type}`;
+            
+            let iconName = 'check_circle';
+            if (type === 'error') iconName = 'error';
+            if (type === 'warning') iconName = 'warning';
+            
+            card.innerHTML = `
+                <span class="material-symbols-outlined text-[24px]" style="color: ${type==='success'?'#116c4a':type==='error'?'#ba1a1a':'#3a2017'}">${iconName}</span>
+                <span class="font-label-md text-label-md text-[#191c1d]">${message}</span>
+            `;
+            
+            container.appendChild(card);
+            
+            // Trigger animation
+            setTimeout(() => {
+                card.classList.add('show');
+            }, 10);
+            
+            // Dismiss after 4 seconds
+            setTimeout(() => {
+                card.classList.remove('show');
+                setTimeout(() => {
+                    card.remove();
+                }, 300);
+            }, 4000);
+        };
+
+        // Welcome Greeting Personalization
+        let farmerName = "Jamie";
+        const savedPhone = sessionStorage.getItem('agriscan_phone');
+        if (savedPhone) {
+            if (/^\+?[\d\s\-]+$/.test(savedPhone)) {
+                farmerName = savedPhone.length > 12 ? savedPhone.substring(0, 10) + '...' : savedPhone;
+            } else if (savedPhone.includes('@')) {
+                const parts = savedPhone.split('@');
+                farmerName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+            } else {
+                farmerName = savedPhone;
+            }
+        }
+
+        const welcomeTitle = document.querySelector('h3.tracking-tight');
+        if (welcomeTitle) {
+            welcomeTitle.textContent = `Welcome Back, ${farmerName}`;
+        }
+
+        // Language Translation Engine
+        const langBtn = document.getElementById('dash-lang-btn');
+        let currentLang = 'en';
+
+        const dashboardTranslations = {
+            en: {
+                welcome: "Welcome Back, " + farmerName,
+                welcomeSub: "Your farm health is generally stable. You have 3 active disease alerts that require immediate field intervention.",
+                activeSeason: "Active Season - Kharif",
+                btnScan: "Start Field Scan",
+                btnHistory: "View History Log",
+                healthIndex: "Farm Health Index",
+                healthSub: "Weighted metric across 4 active parcels.",
+                totalScans: "Total Scans Logged",
+                scansSub: "+14 scans performed this week.",
+                offlineScans: "Offline Scans Queue",
+                offlineSub: "Scans performed in remote fields offline.",
+                syncNow: "Sync Now",
+                activeAlerts: "Active Alerts",
+                alertsSub: "Requires biological/chemical action.",
+                chartTitle: "Diagnostic Scan Velocity",
+                chartSub: "Scanning counts and detected disease incidence over the last week",
+                weatherTitle: "Weather & Spores",
+                weatherAlert: "Humidity Alert",
+                growthIndex: "Spore Growth Index",
+                riskMed: "Medium",
+                riskHigh: "Critical High",
+                dewPoint: "Dew Point Risk",
+                solarRad: "Solar Radiation",
+                fungalAdv: "Fungal Advisory: High moisture forecast. Apply preventive organic copper soap to solanaceous fields.",
+                alertTitleText: "Recent Alerts",
+                clearAllText: "Clear All"
+            },
+            kn: {
+                welcome: "ಸ್ವಾಗತ, " + farmerName,
+                welcomeSub: "ನಿಮ್ಮ ಫಾರ್ಮ್ ಆರೋಗ್ಯವು ಸಾಮಾನ್ಯವಾಗಿ ಸ್ಥಿರವಾಗಿರುತ್ತದೆ. ನಿಮ್ಮ ಗಮನ ಹರಿಸಬೇಕಾದ 3 ಸಕ್ರಿಯ ರೋಗ ಎಚ್ಚರಿಕೆಗಳಿವೆ.",
+                activeSeason: "ಸಕ್ರಿಯ ಹಂಗಾಮು - ಖಾರೀಫ್",
+                btnScan: "ಫೀಲ್ಡ್ ಸ್ಕ್ಯಾನ್ ಪ್ರಾರಂಭಿಸಿ",
+                btnHistory: "ಹಿಸ್ಟರಿ ಲಾಗ್ ವೀಕ್ಷಿಸಿ",
+                healthIndex: "ಫಾರ್ಮ್ ಹೆಲ್ತ್ ಇಂಡೆಕ್ಸ್",
+                healthSub: "4 ಸಕ್ರಿಯ ಪಾರ್ಸೆಲ್‌ಗಳ ಒಟ್ಟು ಮೆಟ್ರಿಕ್.",
+                totalScans: "ಒಟ್ಟು ಸ್ಕ್ಯಾನ್ ಲಾಗ್",
+                scansSub: "ಈ ವಾರ +14 ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗಿದೆ.",
+                offlineScans: "ಆಫ್‌ಲೈನ್ ಸ್ಕ್ಯಾನ್ ಸರತಿ",
+                offlineSub: "ಆಫ್‌ಲೈನ್ ಕ್ಷೇತ್ರದಲ್ಲಿ ಮಾಡಿದ ಸ್ಕ್ಯಾನ್‌ಗಳು.",
+                syncNow: "ಸಿಂಕ್ ಮಾಡಿ",
+                activeAlerts: "ಸಕ್ರಿಯ ಎಚ್ಚರಿಕೆಗಳು",
+                alertsSub: "ಜೈವಿಕ ಅಥವಾ ರಾಸಾಯನಿಕ ಕ್ರಿಯೆಯ ಅಗತ್ಯವಿದೆ.",
+                chartTitle: "ರೋಗ ಸ್ಕ್ಯಾನ್ ವೇಗ",
+                chartSub: "ಕಳೆದ ವಾರದಲ್ಲಿ ಸ್ಕ್ಯಾನ್ ಎಣಿಕೆಗಳು ಮತ್ತು ಪತ್ತೆಯಾದ ರೋಗಗಳು",
+                weatherTitle: "ಹವಾಮಾನ ಮತ್ತು ಸ್ಪೋರ್ಸ್",
+                weatherAlert: "ಆರ್ದ್ರತೆ ಎಚ್ಚರಿಕೆ",
+                growthIndex: "ಸ್ಪೋರ್ ಬೆಳವಣಿಗೆಯ ಸೂಚ್ಯಂಕ",
+                riskMed: "ಮಧ್ಯಮ",
+                riskHigh: "ಗಂಭೀರ ಅಪಾಯ",
+                dewPoint: "ಡ್ಯೂ ಪಾಯಿಂಟ್ ರಿಸ್ಕ್",
+                solarRad: "ಸೌರ ವಿಕಿರಣ",
+                fungalAdv: "ಶಿಲೀಂಧ್ರ ಸಲಹೆ: ಹೆಚ್ಚಿನ ತೇವಾಂಶ ಮುನ್ಸೂಚನೆ. ತರಕಾರಿ ಹೊಲಗಳಿಗೆ ಸಾವಯವ ತಾಮ್ರದ ಸೋಪ್ ಸಿಂಪಡಿಸಿ.",
+                alertTitleText: "ಇತ್ತೀಚಿನ ಎಚ್ಚರಿಕೆಗಳು",
+                clearAllText: "ಎಲ್ಲವನ್ನೂ ಅಳಿಸಿ"
+            }
+        };
+
+        if (langBtn) {
+            langBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'en' ? 'kn' : 'en';
+                const trans = dashboardTranslations[currentLang];
+                
+                // Welcome card
+                if (welcomeTitle) welcomeTitle.textContent = trans.welcome;
+                const welcomeSubEl = document.querySelector('.bg-gradient-to-br p');
+                if (welcomeSubEl) welcomeSubEl.textContent = trans.welcomeSub;
+                const seasonEl = document.querySelector('.bg-gradient-to-br span');
+                if (seasonEl) seasonEl.textContent = trans.activeSeason;
+                
+                const btnScanEl = document.querySelector('button[onclick*="scan_portal"] span + span');
+                if (btnScanEl) btnScanEl.textContent = trans.btnScan;
+                const btnHistEl = document.querySelector('button[onclick*="history_log"] span');
+                if (btnHistEl) btnHistEl.textContent = trans.btnHistory;
+                
+                // Bento Metrics
+                document.querySelectorAll('.glass-card').forEach((card, idx) => {
+                    const title = card.querySelector('h4');
+                    const desc = card.querySelector('p');
+                    if (idx === 0) {
+                        if (title) title.textContent = trans.healthIndex;
+                        if (desc) desc.textContent = trans.healthSub;
+                    } else if (idx === 1) {
+                        if (title) title.textContent = trans.totalScans;
+                        if (desc) desc.textContent = trans.scansSub;
+                    } else if (idx === 2) {
+                        if (title) title.textContent = trans.offlineScans;
+                        if (desc) desc.textContent = trans.offlineSub;
+                        const syncBtnText = document.getElementById('dash-sync-btn');
+                        if (syncBtnText && sessionStorage.getItem('agriscan_synced') !== 'true') {
+                            syncBtnText.textContent = trans.syncNow;
+                        }
+                    } else if (idx === 3) {
+                        if (title) title.textContent = trans.activeAlerts;
+                        if (desc) desc.textContent = trans.alertsSub;
+                    }
+                });
+
+                // Chart text
+                const chartH3 = document.querySelector('.lg-span-2 h3, h3:contains("Scan Velocity")');
+                const chartH3Alternative = document.querySelector('.lg\\:col-span-2 h3');
+                if (chartH3Alternative) chartH3Alternative.textContent = trans.chartTitle;
+                const chartP = document.querySelector('.lg\\:col-span-2 p');
+                if (chartP) chartP.textContent = trans.chartSub;
+
+                // Weather text
+                const weatherH3 = document.querySelector('h3:not(.tracking-tight):not(.font-bold)');
+                const weatherTitleAlternative = document.querySelector('.p-6.rounded-2xl.border:nth-of-type(2) h3, .grid > div:nth-of-type(2) h3');
+                if (weatherTitleAlternative) weatherTitleAlternative.textContent = trans.weatherTitle;
+                
+                const weatherAlertSpan = document.querySelector('span.bg-tertiary-fixed');
+                if (weatherAlertSpan) weatherAlertSpan.textContent = trans.weatherAlert;
+                
+                const fungalP = document.querySelector('.p-3\\.5.bg-primary-container\\/20 p');
+                if (fungalP) fungalP.innerHTML = `<strong>${currentLang === 'en' ? 'Fungal Advisory:' : 'ಶಿಲೀಂಧ್ರ ಮುನ್ಸೂಚನೆ:'}</strong> ${trans.fungalAdv}`;
+
+                // Notifications elements
+                const notifTitleEl = document.getElementById('notif-title');
+                if (notifTitleEl) notifTitleEl.textContent = trans.alertTitleText;
+                const notifClearEl = document.getElementById('notif-clear');
+                if (notifClearEl) notifClearEl.textContent = trans.clearAllText;
+
+                window.showToast(currentLang === 'en' ? "Language changed to English!" : "ಭಾಷೆಯನ್ನು ಕನ್ನಡಕ್ಕೆ ಬದಲಾಯಿಸಲಾಗಿದೆ!", "success");
+            });
+        }
+
+        // Notification Drodown Controls
+        const notifBtn = document.getElementById('dash-notif-btn');
+        const notifDropdown = document.getElementById('dash-notif-dropdown');
+        const notifDot = document.getElementById('dash-notif-dot');
+
+        if (notifBtn && notifDropdown) {
+            notifBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notifDropdown.classList.toggle('show');
+            });
+            document.addEventListener('click', (e) => {
+                if (notifDropdown.classList.contains('show') && e.target !== notifBtn && !notifDropdown.contains(e.target)) {
+                    notifDropdown.classList.remove('show');
+                }
+            });
+        }
+
+        window.dismissNotif = function(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+            
+            const list = document.getElementById('notif-list');
+            if (list && list.children.length === 0) {
+                list.innerHTML = `<p class="text-xs text-outline text-center py-4">No recent notifications</p>`;
+                if (notifDot) notifDot.style.display = 'none';
+            }
+        };
+
+        window.clearNotifications = function() {
+            const list = document.getElementById('notif-list');
+            if (list) {
+                list.innerHTML = `<p class="text-xs text-outline text-center py-4">No recent notifications</p>`;
+            }
+            if (notifDot) notifDot.style.display = 'none';
+            window.showToast("All alerts cleared!", "info");
+        };
+
+        // Sync button loading state simulation
+        const syncBtn = document.getElementById('dash-sync-btn');
+        const syncIcon = document.getElementById('dash-sync-icon');
+        const syncText = document.getElementById('dash-sync-text');
+        const syncProgress = document.getElementById('dash-sync-progress');
+        const bentoPendingCount = document.getElementById('dash-pending-count');
+
+        function setSyncedStateDashboard() {
+            if (syncIcon) {
+                syncIcon.classList.remove('animate-spin');
+                syncIcon.textContent = 'check_circle';
+                syncIcon.style.color = '#116c4a';
+            }
+            if (syncBtn) {
+                syncBtn.innerHTML = `Synced`;
+                syncBtn.className = 'text-xs text-outline font-bold cursor-default';
+                syncBtn.disabled = true;
+            }
+            if (bentoPendingCount) bentoPendingCount.textContent = '0';
+            if (syncText) syncText.textContent = 'All field scans are completely synchronized with edge cloud.';
+            if (syncProgress) {
+                syncProgress.style.width = '100%';
+                if (syncProgress.classList.contains('bg-tertiary')) {
+                    syncProgress.classList.remove('bg-tertiary');
+                    syncProgress.classList.add('bg-secondary');
+                }
+            }
+        }
+
+        // Check synced state on load
+        if (sessionStorage.getItem('agriscan_synced') === 'true') {
+            setSyncedStateDashboard();
+        }
+
+        if(syncBtn && sessionStorage.getItem('agriscan_synced') !== 'true') {
+            syncBtn.addEventListener('click', function() {
+                if (syncIcon) syncIcon.classList.add('animate-spin');
+                this.innerHTML = `Syncing...`;
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    sessionStorage.setItem('agriscan_synced', 'true');
+                    setSyncedStateDashboard();
+                    
+                    // Also trigger a toast notification!
+                    window.showToast("Cloud synchronization successful!", "success");
+                }, 2000);
+            });
+        }
+
+        // Smooth navigation transitions
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('javascript') || href.startsWith('mailto') || href.startsWith('tel')) return;
+                if (link.target === '_blank') return;
+                e.preventDefault();
+                document.body.classList.add('page-exit');
+                setTimeout(() => { window.location.href = href; }, 200);
+            });
+        });
+    </script>
+<!-- Mobile Bottom Nav Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-outline-variant flex justify-around items-center py-2 px-2">
+  <a href="../agriscan_dashboard/code.html" class="flex flex-col items-center gap-0.5 text-primary px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+    <span class="text-[10px] font-bold">Dashboard</span>
+  </a>
+  <a href="../scan_portal/code.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">camera</span>
+    <span class="text-[10px] font-medium">Scan</span>
+  </a>
+  <a href="../history_log/code.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">history</span>
+    <span class="text-[10px] font-medium">History</span>
+  </a>
+  <a href="../treatment_guides/code.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">healing</span>
+    <span class="text-[10px] font-medium">Treatment</span>
+  </a>
+  <a href="../index.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">apps</span>
+    <span class="text-[10px] font-medium">Hub</span>
+  </a>
+</nav>
+</body>
+</html>

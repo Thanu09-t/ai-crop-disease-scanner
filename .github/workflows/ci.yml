@@ -1,0 +1,33 @@
+name: CI Verification & Link Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  validate:
+    name: Validate Structure & Assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Verify Core HTML Entry Points
+        run: |
+          test -f index.html || (echo "Root index.html missing" && exit 1)
+          test -f stitch_ai_crop_disease_scanner/index.html || (echo "Master hub missing" && exit 1)
+          test -f stitch_ai_crop_disease_scanner/login/code.html || (echo "Login module missing" && exit 1)
+          test -f stitch_ai_crop_disease_scanner/agriscan_dashboard/code.html || (echo "Dashboard module missing" && exit 1)
+          test -f stitch_ai_crop_disease_scanner/scan_portal/code.html || (echo "Scan portal missing" && exit 1)
+          test -f stitch_ai_crop_disease_scanner/analysis_diagnosis/code.html || (echo "Diagnosis module missing" && exit 1)
+          test -f stitch_ai_crop_disease_scanner/treatment_guides/code.html || (echo "Treatment module missing" && exit 1)
+          test -f stitch_ai_crop_disease_scanner/history_log/code.html || (echo "History module missing" && exit 1)
+          echo "All critical application modules verified successfully!"
+
+      - name: Check for Clean HTML Structure
+        run: |
+          find . -name "*.html" -exec grep -l "<!DOCTYPE html>" {} +

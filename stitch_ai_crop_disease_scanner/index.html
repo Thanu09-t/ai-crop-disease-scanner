@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriScan Pro - Interactive Launchpad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #012d1d 0%, #116c4a 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(1, 45, 29, 0.05);
+        }
+        .glow-button {
+            box-shadow: 0 4px 14px rgba(17, 108, 74, 0.4);
+        }
+    </style>
+</head>
+<body class="text-[#191c1d] min-h-screen flex flex-col justify-between">
+
+    <!-- Top Navbar -->
+    <header class="bg-white border-b border-[#c1c8c2] py-3.5 px-6 md:px-12 flex justify-between items-center shadow-sm sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[#116c4a] text-3xl font-bold">eco</span>
+            <span class="text-xl font-extrabold text-[#012d1d] tracking-tight">AgriScan Pro</span>
+        </div>
+        <!-- Quick Portal Bar -->
+        <nav class="hidden lg:flex items-center gap-2 text-xs font-bold text-[#414844]">
+            <a href="login/code.html" class="px-3 py-1.5 rounded-lg hover:bg-[#a1f4c8]/30 hover:text-[#012d1d] transition-colors">1. Login</a>
+            <a href="create_account_verification/code.html" class="px-3 py-1.5 rounded-lg hover:bg-[#a1f4c8]/30 hover:text-[#012d1d] transition-colors">2. Verify</a>
+            <a href="create_account_farm_profile/code.html" class="px-3 py-1.5 rounded-lg hover:bg-[#a1f4c8]/30 hover:text-[#012d1d] transition-colors">3. Farm Setup</a>
+            <a href="agriscan_dashboard/code.html" class="px-3 py-1.5 rounded-lg bg-[#a1f4c8]/40 text-[#012d1d] font-extrabold hover:bg-[#a1f4c8] transition-colors">4. Dashboard</a>
+            <a href="scan_portal/code.html" class="px-3 py-1.5 rounded-lg hover:bg-[#a1f4c8]/30 hover:text-[#012d1d] transition-colors">5. Scanner</a>
+            <a href="analysis_diagnosis/code.html" class="px-3 py-1.5 rounded-lg hover:bg-[#a1f4c8]/30 hover:text-[#012d1d] transition-colors">6. Diagnosis</a>
+            <a href="treatment_guides/code.html" class="px-3 py-1.5 rounded-lg hover:bg-[#a1f4c8]/30 hover:text-[#012d1d] transition-colors">7. Treatment</a>
+            <a href="history_log/code.html" class="px-3 py-1.5 rounded-lg hover:bg-[#a1f4c8]/30 hover:text-[#012d1d] transition-colors">8. History</a>
+        </nav>
+        <div class="flex gap-2">
+            <a href="agriscan_dashboard/code.html" class="bg-[#116c4a] text-white px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm hover:bg-[#012d1d] transition-all">
+                <span>Enter App</span>
+                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-[1280px] mx-auto px-6 md:px-12 py-10 flex-grow w-full">
+        <!-- Hero Section -->
+        <section class="hero-gradient text-white rounded-3xl p-8 md:p-12 mb-12 flex flex-col md:flex-row justify-between items-center gap-8 relative overflow-hidden card-shadow">
+            <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+            <div class="flex-1 space-y-6 z-10">
+                <span class="bg-[#a1f4c8] text-[#012d1d] px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5">
+                    <span class="w-2 h-2 bg-[#116c4a] rounded-full animate-pulse"></span> Full Application Active & Synchronized
+                </span>
+                <h1 class="text-3xl md:text-5xl font-extrabold leading-tight tracking-tight">
+                    AgriScan Pro <br><span class="text-[#a1f4c8]">Precision Field Diagnostics</span>
+                </h1>
+                <p class="text-white/80 text-lg max-w-xl font-light leading-relaxed">
+                    A high-fidelity interactive precision agriculture platform connecting farmers, smart offline crop diagnostic scanning, automated treatment guidelines, and field telemetry.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-2">
+                    <a href="login/code.html" class="glow-button inline-flex items-center gap-2 bg-[#a1f4c8] text-[#012d1d] font-bold px-7 py-3.5 rounded-xl hover:bg-white hover:text-[#116c4a] transition-all active:scale-95 duration-200 shadow-lg">
+                        <span>Start from Onboarding</span> <span class="material-symbols-outlined font-bold">login</span>
+                    </a>
+                    <a href="agriscan_dashboard/code.html" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold px-7 py-3.5 rounded-xl border border-white/20 transition-all active:scale-95 duration-200">
+                        <span>Jump to Dashboard</span> <span class="material-symbols-outlined font-bold">dashboard</span>
+                    </a>
+                    <a href="scan_portal/code.html" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold px-7 py-3.5 rounded-xl border border-white/20 transition-all active:scale-95 duration-200">
+                        <span>Launch Scanner</span> <span class="material-symbols-outlined font-bold">photo_camera</span>
+                    </a>
+                </div>
+            </div>
+            <div class="w-full md:w-[350px] aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl z-10 border-4 border-white/10">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUURQ8NQBV3hni_xddec4lF9B85GY0btxeVo4gLjFgx5sjq6JBlQQfVCXZduZgU1_NP7Hbppj_sNjnWwAvp_JeULIz5O_rF3ifV9ansYefKeJiFnxn3ISOb_uMKgyY8em8Isrv7YIZSfv6GVKo5PEbtmlH3rlzPU78zsaI0JtQ0P5_ofQZN7ULaTG2ryE8nymCMdachA_KDd-EaRsw1gslknCc4LjlV82Ijps--xcTqKJHkq7jWGFB7bByHisLK4DsJjBUcBriqA" alt="Farm Fields" class="w-full h-full object-cover" />
+            </div>
+        </section>
+
+        <!-- Screens Grid Section -->
+        <section class="space-y-6">
+            <h2 class="text-2xl font-bold text-[#012d1d] tracking-tight">Prototype Screens Directory</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Screen Card 1 -->
+                <div class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined">login</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#012d1d] mb-2">1. Secure Access</h3>
+                        <p class="text-sm text-[#414844] mb-6">Agronomist & Farmer entry point featuring bi-lingual English/Kannada selection and clean interface.</p>
+                    </div>
+                    <a href="login/code.html" class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                        Open Screen <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <!-- Screen Card 2 -->
+                <div class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined">verified</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#012d1d] mb-2">2. OTP Verification</h3>
+                        <p class="text-sm text-[#414844] mb-6">6-digit interactive SMS/phone registration page with countdown timer and fallback.</p>
+                    </div>
+                    <a href="create_account_verification/code.html" class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                        Open Screen <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <!-- Screen Card 3 -->
+                <div class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined">agriculture</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#012d1d] mb-2">3. Farm Setup</h3>
+                        <p class="text-sm text-[#414844] mb-6">Crop selections, satellite address search, manual coordinates and custom mapping setup.</p>
+                    </div>
+                    <a href="create_account_farm_profile/code.html" class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                        Open Screen <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <!-- Screen Card 4 -->
+                <div class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined">check_circle</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#012d1d] mb-2">4. Success Complete</h3>
+                        <p class="text-sm text-[#414844] mb-6">Elegant confetti-burst confirmation page with beautiful rustic crop harvest graphics.</p>
+                    </div>
+                    <a href="account_created_success/code.html" class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                        Open Screen <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <!-- Screen Card 5 -->
+                <div class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined">grid_view</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#012d1d] mb-2">5. Main Dashboard</h3>
+                        <p class="text-sm text-[#414844] mb-6">Interactive agricultural analytics hub featuring bento metrics, spore risk forecasts and live weather updates.</p>
+                    </div>
+                    <a href="agriscan_dashboard/code.html" class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                        Open Screen <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <!-- Screen Card 6 -->
+                <div class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined">photo_camera</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#012d1d] mb-2">6. Scanner Viewfinder</h3>
+                        <p class="text-sm text-[#414844] mb-6">Real-time scan uploader with dragging file state, camera guides and animated scanning lasers.</p>
+                    </div>
+                    <a href="scan_portal/code.html" class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                        Open Screen <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <!-- Screen Card 7 -->
+                <div class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined">psychology</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#012d1d] mb-2">7. Diagnosis & Metrics</h3>
+                        <p class="text-sm text-[#414844] mb-6">Detailed AI Late Blight diagnosis overlay showing lesion detection zones and match scores.</p>
+                    </div>
+                    <a href="analysis_diagnosis/code.html" class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                        Open Screen <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <!-- Screen Card 8 -->
+                <div class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined">healing</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#012d1d] mb-2">8. Recovery Guides</h3>
+                        <p class="text-sm text-[#414844] mb-6">Comprehensive step-by-step chemical and organic treatments bento with agronomist contacts.</p>
+                    </div>
+                    <a href="treatment_guides/code.html" class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                        Open Screen <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+
+                <!-- Screen Card 9 -->
+                <div class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined">history</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-[#012d1d] mb-2">9. History Log</h3>
+                        <p class="text-sm text-[#414844] mb-6">Interactive disease scanning history filterable by crop type and searchable by field ID.</p>
+                    </div>
+                    <a href="history_log/code.html" class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                        Open Screen <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#012d1d] text-white/60 py-6 px-12 text-center text-xs border-t border-[#116c4a]/30">
+        <p class="font-light">© 2026 AgriScan Management Systems. Built with Earthy Modern Design Tokens.</p>
+    </footer>
+
+</body>
+</html>

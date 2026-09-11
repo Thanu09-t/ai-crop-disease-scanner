@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Welcome to AgriScan Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#005236",
+                      "background": "#f8f9fa",
+                      "primary-container": "#1b4332",
+                      "surface-container": "#edeeef",
+                      "on-secondary-fixed": "#002113",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#2d150d",
+                      "inverse-surface": "#2e3132",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-on-surface": "#f0f1f2",
+                      "secondary": "#116c4a",
+                      "surface-dim": "#d9dadb",
+                      "error": "#ba1a1a",
+                      "tertiary": "#3a2017",
+                      "secondary-fixed": "#a1f4c8",
+                      "outline": "#717973",
+                      "on-surface-variant": "#414844",
+                      "tertiary-fixed": "#ffdbcf",
+                      "on-secondary-container": "#1b724f",
+                      "inverse-primary": "#a5d0b9",
+                      "secondary-fixed-dim": "#86d7ad",
+                      "on-primary-container": "#86af99",
+                      "on-error": "#ffffff",
+                      "on-background": "#191c1d",
+                      "on-secondary": "#ffffff",
+                      "surface-tint": "#3f6653",
+                      "secondary-container": "#a1f4c8",
+                      "primary": "#012d1d",
+                      "surface-variant": "#e1e3e4",
+                      "on-error-container": "#93000a",
+                      "surface-bright": "#f8f9fa",
+                      "outline-variant": "#c1c8c2",
+                      "on-surface": "#191c1d",
+                      "primary-fixed-dim": "#a5d0b9",
+                      "on-primary": "#ffffff",
+                      "surface-container-high": "#e7e8e9",
+                      "on-primary-fixed-variant": "#274e3d",
+                      "surface-container-low": "#f3f4f5",
+                      "surface": "#f8f9fa",
+                      "on-tertiary-fixed-variant": "#5e3f35",
+                      "on-tertiary-container": "#c79d90",
+                      "surface-container-highest": "#e1e3e4",
+                      "tertiary-fixed-dim": "#e9bdae",
+                      "tertiary-container": "#52352b",
+                      "on-primary-fixed": "#002114",
+                      "primary-fixed": "#c1ecd4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "container-margin-mobile": "16px",
+                      "container-margin-desktop": "64px",
+                      "touch-target-min": "48px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "title-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "caption": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        .success-accent-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #1b4332, #a1f4c8);
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        /* === Smooth Page Transition === */
+        @keyframes pageEntrance {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        body {
+            animation: pageEntrance 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        .page-exit {
+            animation: pageExit 0.25s ease-in forwards !important;
+        }
+        @keyframes pageExit {
+            to { opacity: 0; transform: translateY(-8px); }
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- Subtle Success Animation Layer -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden z-50" id="confetti-container"></div>
+<main class="min-h-screen flex flex-col md:flex-row">
+<!-- Left Section: High Quality Imagery -->
+<section class="relative w-full md:w-1/2 lg:w-3/5 h-64 md:h-screen overflow-hidden">
+<img alt="Successful harvest" class="absolute inset-0 w-full h-full object-cover" data-alt="A cinematic, high-resolution photograph of a sun-drenched organic farm during a bountiful harvest. In the foreground, a wooden crate overflows with vibrant green kale, ripe red tomatoes, and golden corn, glistening with morning dew. The background features rolling emerald hills and a clear azure sky, captured with a shallow depth of field. The lighting is warm and high-key, emphasizing a modern corporate agricultural aesthetic that is both grounded and technologically optimistic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyrgIHRhyJJ0GEomtHgF-JeneLBRVuFHBxU7SJiYJIjVacnDJfn_0lyUH4nKc0yQdg1-dalBMdHF5TGcPjr2brI4Q6p0Wez-ZS6H0QKKRudxan1SxpFitnZbh-_h3b2GISXKHPrjokyE4d16RX6uiBkC2ygBeH_6_g1cppj1l62yml1zJTXUFN18gWnoJ7zUrfaYncACVI_o1AFxEWEb7I09W6d-BR6znQeTmu9jBlKSfc33XAfMW_u6FoWLG29y-r2JV4LW1P3A"/>
+<!-- Branding Overlay -->
+<div class="absolute top-8 left-8 md:top-12 md:left-12 z-10 flex items-center gap-3">
+<a href="../index.html" class="flex items-center gap-2 bg-surface/90 backdrop-blur-md px-4 py-2 rounded-xl shadow-lg border border-outline-variant/30 hover:bg-surface transition-all">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="font-display-lg text-title-md text-primary font-bold tracking-tight">AgriScan Pro</span>
+<span class="text-xs bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full font-bold">Hub</span>
+</a>
+</div>
+<!-- Visual Gradient Overlay for transition -->
+<div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-transparent via-transparent to-surface/20"></div>
+</section>
+<!-- Right Section: Welcome Message & CTAs -->
+<section class="w-full md:w-1/2 lg:w-2/5 bg-surface flex items-center justify-center px-4 md:px-16 py-12 md:py-0 relative">
+<div class="max-w-md w-full flex flex-col gap-unit">
+<!-- Success Indicator -->
+<div class="w-16 h-16 bg-secondary-container rounded-full flex items-center justify-center mb-4 animate-bounce">
+<span class="material-symbols-outlined text-on-secondary-container text-4xl" style="font-variation-settings: 'wght' 600;">check_circle</span>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2" id="welcome-header">
+                    Welcome, Farmer Jamie!
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 leading-relaxed">
+                    Your account is now active. AgriScan Pro is ready to help you optimize your field's health with real-time data and diagnostic insights. Let's start growing together.
+                </p>
+<!-- Actions Container -->
+<div class="flex flex-col gap-4">
+<!-- Primary CTA -->
+<button class="group h-[touch-target-min] bg-primary text-on-primary rounded-xl font-title-md flex items-center justify-center gap-2 shadow-lg hover:bg-primary-container transition-all duration-300 active:scale-95 focus:ring-4 focus:ring-secondary-container cursor-pointer" onclick="window.location.href='../agriscan_dashboard/code.html'">
+<span>Go to Dashboard</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<!-- Secondary CTA -->
+<button class="h-[touch-target-min] border-2 border-secondary text-secondary rounded-xl font-title-md flex items-center justify-center gap-2 hover:bg-secondary-container transition-all duration-300 active:scale-95 cursor-pointer" onclick="window.location.href='../scan_portal/code.html'">
+<span class="material-symbols-outlined">camera</span>
+<span>Start Your First Scan</span>
+</button>
+<a href="../index.html" class="text-center text-sm font-bold text-outline hover:text-primary transition-colors py-1">
+    ← Return to Portal Hub
+</a>
+</div>
+<!-- Feature Teaser Chips -->
+<div class="mt-8 pt-6 border-t border-outline-variant flex flex-wrap gap-2">
+<div class="bg-surface-container-low px-3 py-1.5 rounded-full flex items-center gap-2 border border-outline-variant/50">
+<span class="material-symbols-outlined text-label-md text-secondary">cloud</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Live Weather</span>
+</div>
+<div class="bg-surface-container-low px-3 py-1.5 rounded-full flex items-center gap-2 border border-outline-variant/50">
+<span class="material-symbols-outlined text-label-md text-secondary">analytics</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Yield Reports</span>
+</div>
+<div class="bg-surface-container-low px-3 py-1.5 rounded-full flex items-center gap-2 border border-outline-variant/50">
+<span class="material-symbols-outlined text-label-md text-secondary">diversity_3</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Expert Contact</span>
+</div>
+</div>
+<footer class="mt-auto pt-8">
+<p class="font-caption text-caption text-outline">
+                        © 2026 AgriScan Management Systems. v2.4.1-stable
+                    </p>
+</footer>
+</div>
+</section>
+</main>
+<script>
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#1B4332', '#116C4A', '#86D7AD', '#A1F4C8', '#FFDBCF'];
+            const shapes = ['rect', 'circle'];
+
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const left = Math.random() * 100;
+                const duration = 2 + Math.random() * 3;
+                const delay = Math.random() * 2;
+                const size = 5 + Math.random() * 10;
+                
+                confetti.className = 'confetti';
+                confetti.style.left = `${left}%`;
+                confetti.style.top = '100%';
+                confetti.style.backgroundColor = color;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = shapes[Math.floor(Math.random() * shapes.length)] === 'circle' ? `${size}px` : `${size * 0.6}px`;
+                confetti.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)] === 'circle' ? '50%' : '2px';
+                confetti.style.animation = `float ${duration}s ease-in ${delay}s infinite`;
+                
+                container.appendChild(confetti);
+                
+                // Remove after one cycle if preferred, but infinite here for "welcome vibe"
+                setTimeout(() => {
+                    confetti.remove();
+                }, (duration + delay) * 1000);
+            }
+        }
+
+        // Initial burst & Personalized greeting
+        window.addEventListener('DOMContentLoaded', () => {
+            createConfetti();
+            const savedPhone = sessionStorage.getItem('agriscan_phone');
+            if (savedPhone) {
+                let displayName = savedPhone;
+                if (savedPhone.includes('@')) {
+                    const prefix = savedPhone.split('@')[0];
+                    displayName = prefix.charAt(0).toUpperCase() + prefix.slice(1);
+                }
+                const header = document.getElementById('welcome-header');
+                if (header) header.textContent = `Welcome, ${displayName}!`;
+            }
+        });
+    </script>
+</body></html>

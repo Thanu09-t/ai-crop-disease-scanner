@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgriScan | Treatment &amp; Recommendations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#3a2017",
+                      "on-secondary-container": "#1b724f",
+                      "on-primary-fixed": "#002114",
+                      "surface-variant": "#e1e3e4",
+                      "primary-fixed-dim": "#a5d0b9",
+                      "outline": "#717973",
+                      "on-primary-fixed-variant": "#274e3d",
+                      "surface-container-highest": "#e1e3e4",
+                      "on-tertiary": "#ffffff",
+                      "outline-variant": "#c1c8c2",
+                      "surface-bright": "#f8f9fa",
+                      "secondary-fixed": "#a1f4c8",
+                      "inverse-primary": "#a5d0b9",
+                      "on-background": "#191c1d",
+                      "on-tertiary-fixed": "#2d150d",
+                      "on-primary": "#ffffff",
+                      "inverse-surface": "#2e3132",
+                      "surface-dim": "#d9dadb",
+                      "inverse-on-surface": "#f0f1f2",
+                      "background": "#f8f9fa",
+                      "tertiary-fixed": "#ffdbcf",
+                      "tertiary-container": "#52352b",
+                      "on-primary-container": "#86af99",
+                      "on-surface-variant": "#414844",
+                      "primary-container": "#1b4332",
+                      "surface-container-low": "#f3f4f5",
+                      "primary": "#012d1d",
+                      "on-error": "#ffffff",
+                      "surface-tint": "#3f6653",
+                      "primary-fixed": "#c1ecd4",
+                      "surface": "#f8f9fa",
+                      "error": "#ba1a1a",
+                      "on-tertiary-fixed-variant": "#5e3f35",
+                      "error-container": "#ffdad6",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#86d7ad",
+                      "secondary": "#116c4a",
+                      "on-tertiary-container": "#c79d90",
+                      "secondary-container": "#a1f4c8",
+                      "surface-container": "#edeeef",
+                      "on-secondary-fixed": "#002113",
+                      "on-secondary-fixed-variant": "#005236",
+                      "surface-container-high": "#e7e8e9",
+                      "on-error-container": "#93000a",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#e9bdae",
+                      "on-surface": "#191c1d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "container-margin-desktop": "64px",
+                      "gutter": "16px",
+                      "container-margin-mobile": "16px",
+                      "touch-target-min": "48px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "caption": ["Inter"],
+                      "title-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-md": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                      "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body { background-color: #f8f9fa; color: #191c1d; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(225, 227, 228, 0.5); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c1c8c2; border-radius: 10px; }
+        /* === Smooth Page Transition === */
+        @keyframes pageEntrance {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        body {
+            animation: pageEntrance 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        .page-exit {
+            animation: pageExit 0.25s ease-in forwards !important;
+        }
+        @keyframes pageExit {
+            to { opacity: 0; transform: translateY(-8px); }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden min-h-screen flex">
+<!-- Side Navigation Shell -->
+<aside class="hidden md:flex flex-col h-full py-unit overflow-y-auto bg-surface-container-low border-r border-outline-variant w-72 shrink-0">
+<div class="px-6 py-4 flex items-center justify-between gap-3 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">agriculture</span>
+</div>
+<div>
+<h1 class="font-title-md text-title-md font-bold text-primary">AgriScan Pro</h1>
+<p class="font-caption text-caption text-on-surface-variant">Connectivity: Online</p>
+</div>
+</div>
+<a href="../index.html" class="text-xs bg-secondary-container text-on-secondary-container px-2.5 py-1 rounded-full font-bold hover:opacity-90 transition-opacity">
+    Hub
+</a>
+</div>
+<nav class="flex-1 flex flex-col px-4 gap-2">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container hover:text-on-secondary-container transition-all rounded-lg group" href="../agriscan_dashboard/code.html">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">grid_view</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container hover:text-on-secondary-container transition-all rounded-lg group" href="../scan_portal/code.html">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">camera</span>
+<span class="font-label-md text-label-md">Scan Portal</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container hover:text-on-secondary-container transition-all rounded-lg group" href="../history_log/code.html">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">history</span>
+<span class="font-label-md text-label-md">History Log</span>
+</a>
+<a class="bg-primary-container text-on-primary-container font-bold rounded-lg px-4 py-3 flex items-center gap-3" href="../treatment_guides/code.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">healing</span>
+<span class="font-label-md text-label-md">Treatment Guides</span>
+</a>
+</nav>
+<div class="mt-auto px-4 flex flex-col gap-2">
+<button class="w-full bg-primary text-on-primary h-touch-target-min rounded-xl font-bold active:scale-95 transition-all mb-4 cursor-pointer" onclick="window.location.href='../scan_portal/code.html'">
+                New Scan
+            </button>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container transition-all rounded-lg" href="../index.html">
+<span class="material-symbols-outlined">apps</span>
+<span class="font-label-md text-label-md">Portal Hub Directory</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col min-w-0 bg-background overflow-y-auto">
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center w-full px-4 md:px-16 h-touch-target-min bg-surface shadow-sm z-10 sticky top-0">
+<div class="flex items-center gap-4">
+<a href="../index.html" class="md:hidden text-xs bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-bold">← Hub</a>
+<h2 class="font-headline-lg text-headline-lg font-bold text-primary">Treatment Guides</h2>
+</div>
+<div class="flex items-center gap-gutter">
+<button class="w-touch-target-min h-touch-target-min rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" onclick="window.showToast('Language: English / Kannada guide available', 'info')">
+<span class="material-symbols-outlined">language</span>
+</button>
+<button class="w-touch-target-min h-touch-target-min rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors relative" onclick="window.showToast('No pending treatment alerts', 'info')">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="w-10 h-10 rounded-full bg-outline-variant overflow-hidden border-2 border-primary-container cursor-pointer" onclick="window.location.href='../login/code.html';" title="Logout">
+<img alt="User" data-alt="A close-up professional headshot of a smiling agricultural specialist in a sunlit field, wearing a modern utility vest." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCboatAUD63qkAejuQoZ4-C2xhlv9-ZACLlDALdKF8OwhKrthZjAuKkUxRgjLEe3O9gU5wIXffl_rSDiH00xBg-JdSt6V6Kp-BR2_M3p2D0kYPeqxijwysrdrVZXNFrl99qG5klOhvrBwZGW1KLmrTLOrPYXFDiRfIkIleiiPVLQtcbdg0zat_R2--GXjg4iafpNYZoyIE0Da9Tt15tHCEVG8smcNmxIq6VlMObAxMkIgVuq734wFjc5PL8gG-aUpCxf6ewHI8xHg"/>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto custom-scrollbar px-4 md:px-16 py-8 pb-24 md:pb-8">
+<div class="max-w-[1280px] mx-auto space-y-8">
+<!-- Hero Recommendation Section -->
+<section class="grid grid-cols-12 gap-gutter">
+<div class="col-span-12 lg:col-span-8">
+<div class="glass-card rounded-xl p-8 shadow-sm flex flex-col md:flex-row gap-8 items-center border-l-8 border-l-secondary relative overflow-hidden">
+<div class="flex-1">
+<span id="treatment-diag-badge" class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-md text-label-md mb-4 inline-block">Diagnosis: Early Blight</span>
+<h3 id="treatment-hero-title" class="font-display-lg text-headline-lg font-extrabold text-primary mb-2">Recommended Recovery Plan</h3>
+<p id="treatment-hero-desc" class="text-on-surface-variant body-md max-w-xl">Based on your recent scan of Field A-12 (Tomato Crop), we have identified signs of Alternaria solani. Prompt action is required to prevent yield loss.</p>
+<div class="mt-6 flex flex-wrap gap-4">
+<button id="treatment-pdf-btn" class="flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-lg font-bold hover:shadow-lg transition-all active:scale-95 cursor-pointer">
+<span class="material-symbols-outlined">picture_as_pdf</span>
+                                        Download PDF Guide
+                                    </button>
+<button id="treatment-share-btn" class="flex items-center gap-2 border border-outline text-primary px-6 py-3 rounded-lg font-bold hover:bg-surface-container-low transition-all cursor-pointer">
+<span class="material-symbols-outlined">share</span>
+                                        Share Report
+                                    </button>
+</div>
+</div>
+<div class="w-full md:w-64 h-64 rounded-xl overflow-hidden shadow-md">
+<img id="treatment-hero-img" class="w-full h-full object-cover" data-alt="A high-resolution scientific macro photograph of a crop leaf." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCjtyk4fYuMlab1N-Qs-8-PK_dt7bW7gjquimuwi8xeU5QxjxzmxV5cDgpw2930mlLVcTYrtD3gcctXVcpRrn_zPdH5CqsdK4-Uy0R8M4uzCdqj6pGQQzQQ8pPAV3UI-dr6z1qbF4iXO09fCQCfYm8-Jf831Gf1Yfc2_OP3YbjQT2kU3xf1Htg7ondI0iaV61k89_eS-8wQc0JlnQmcuze4iC7575mNryiV1OQsgqep3U0Uo8z7ohWH0kCqFMdqqejHrDG-_b4Jg"/>
+</div>
+</div>
+</div>
+<!-- Expert Contact Sidebar -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<div class="bg-tertiary-fixed text-on-tertiary-fixed p-6 rounded-xl shadow-sm border border-tertiary-container relative overflow-hidden group">
+<div class="relative z-10">
+<h4 class="font-title-md text-title-md mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+                                    Local Expert Support
+                                </h4>
+<p class="text-on-tertiary-fixed-variant mb-6 font-body-md">Connect with Officer Michael Chen for personalized field advice.</p>
+<div class="flex flex-col gap-3">
+<button class="w-full bg-tertiary text-on-tertiary py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">call</span>
+                                        Call Agriculture Officer
+                                    </button>
+<button class="w-full border border-tertiary-container text-tertiary py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-tertiary-container hover:text-white transition-all">
+<span class="material-symbols-outlined">chat</span>
+                                        Chat with Expert
+                                    </button>
+</div>
+</div>
+<div class="absolute -bottom-8 -right-8 opacity-10 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[120px]">psychiatry</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Treatment Tabs Section -->
+<section class="space-y-gutter">
+<div class="flex items-center gap-8 border-b border-outline-variant">
+<button class="pb-4 font-bold text-primary border-b-4 border-primary transition-all" id="tab-organic" onclick="switchTab('organic')">Organic Solutions</button>
+<button class="pb-4 font-bold text-on-surface-variant border-b-4 border-transparent hover:text-primary transition-all" id="tab-chemical" onclick="switchTab('chemical')">Chemical Treatments</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="content-organic">
+<!-- Step 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xl mb-4">1</div>
+<h5 class="font-title-md text-title-md text-primary mb-2">Prune Infected Leaves</h5>
+<p class="text-on-surface-variant">Carefully remove leaves showing dark spots. Sterilize pruning shears between each cut using 70% isopropyl alcohol to avoid cross-contamination.</p>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xl mb-4">2</div>
+<h5 class="font-title-md text-title-md text-primary mb-2">Apply Copper Fungicide</h5>
+<p class="text-on-surface-variant">Use an OMRI-listed copper soap. Apply thoroughly to both sides of the leaves every 7-10 days, preferably in the late afternoon to prevent leaf burn.</p>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xl mb-4">3</div>
+<h5 class="font-title-md text-title-md text-primary mb-2">Compost Management</h5>
+<p class="text-on-surface-variant">Do not compost infected trimmings. Burn or dispose of them in sealed bags to eliminate fungal spores from your farm's ecosystem.</p>
+</div>
+</div>
+<div class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter" id="content-chemical">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+<div class="w-12 h-12 rounded-full bg-error-container text-on-error-container flex items-center justify-center font-bold text-xl mb-4">A</div>
+<h5 class="font-title-md text-title-md text-primary mb-2">Chlorothalonil Spray</h5>
+<p class="text-on-surface-variant">Standard protective fungicide. Apply at the rate of 2.1 lbs per acre. Ensure full coverage. Observe a 7-day pre-harvest interval.</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+<div class="w-12 h-12 rounded-full bg-error-container text-on-error-container flex items-center justify-center font-bold text-xl mb-4">B</div>
+<h5 class="font-title-md text-title-md text-primary mb-2">Systemic Fungicides</h5>
+<p class="text-on-surface-variant">Use Strobilurin-based products (FRAC Group 11) for deeper penetration. Rotate with other modes of action to prevent resistance.</p>
+</div>
+</div>
+</section>
+<!-- Preventive Measures (Bento Style) -->
+<section class="space-y-gutter">
+<h4 class="font-headline-lg text-headline-lg font-bold text-primary">Long-term Preventive Measures</h4>
+<div class="grid grid-cols-12 grid-rows-2 gap-gutter h-auto lg:h-[400px]">
+<!-- Crop Rotation -->
+<div class="col-span-12 lg:col-span-7 row-span-2 bg-surface-container text-on-surface p-8 rounded-2xl border border-outline-variant flex flex-col justify-between relative overflow-hidden group">
+<div class="relative z-10">
+<div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-on-primary mb-6">
+<span class="material-symbols-outlined">autorenew</span>
+</div>
+<h5 class="font-display-lg text-headline-lg font-bold mb-4">Crop Rotation Mastery</h5>
+<p class="text-on-surface-variant body-lg max-w-md">Avoid planting solanaceous crops (tomatoes, peppers, potatoes) in the same soil for at least 3 years. Rotate with brassicas or legumes to break the fungal life cycle.</p>
+<ul class="mt-6 space-y-2">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary">check_circle</span> Year 1: Legumes (Beans/Peas)</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary">check_circle</span> Year 2: Brassicas (Cabbage/Broccoli)</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary">check_circle</span> Year 3: Root Crops (Carrots)</li>
+</ul>
+</div>
+<div class="absolute right-0 bottom-0 w-1/3 h-full opacity-20 group-hover:scale-105 transition-transform">
+<img class="w-full h-full object-cover" data-alt="A birds-eye view of a perfectly organized vegetable garden with various rectangular crop patches in different stages of growth. The soil is dark and fertile, and the plants are vibrant green. The lighting is crisp morning sun, creating a professional and organized agricultural aesthetic with high contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNlXqe2T2iYzBn1UHqfLOy4p0G_WX3HFzbc3zYUqjql_IoJGbHtKXPV6hMsJnBt7tipkkfSVPy-0DaR-s1N6PDNQJIla6HPPw0aFWtUGRFpeUkA-oc5rGD0jNEDE7SK5fxrrryptmklBF1-7uXvQTMgHSLlRPG_U1vfwLhpd3yeNCUI0tfxmgYBMQY7bL99XcCNHKtiwvmV2e60cx1caBO9FzytjEEpJZ5H8CjxMzH361O9PIJRKI6ACC0dmLNhaGC6NXiiU81zw"/>
+</div>
+</div>
+<!-- Watering Schedule -->
+<div class="col-span-12 lg:col-span-5 row-span-1 bg-primary text-on-primary p-6 rounded-2xl border border-primary-container flex items-center gap-6 group">
+<div class="flex-1">
+<h5 class="font-title-md text-title-md mb-2">Optimized Irrigation</h5>
+<p class="text-primary-fixed-dim text-sm">Switch to drip irrigation. Keeping foliage dry reduces fungal spore activation by 65%.</p>
+<button class="mt-4 text-secondary-fixed font-bold flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                                    View Schedule <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<span class="material-symbols-outlined text-[64px] opacity-40">water_drop</span>
+</div>
+<!-- Spacing Tip -->
+<div class="col-span-12 lg:col-span-5 row-span-1 bg-surface-container-high p-6 rounded-2xl border border-outline-variant flex items-center gap-6">
+<span class="material-symbols-outlined text-[64px] text-primary opacity-40">space_dashboard</span>
+<div class="flex-1">
+<h5 class="font-title-md text-title-md text-primary mb-2">Airflow Dynamics</h5>
+<p class="text-on-surface-variant text-sm">Increase plant spacing to 24 inches. Better airflow promotes faster leaf drying after rain.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Footer Shell -->
+<footer class="flex flex-col md:flex-row justify-between items-center px-container-margin-desktop py-unit gap-gutter w-full bg-surface-container-highest border-t border-outline-variant shrink-0">
+<p class="font-caption text-caption text-on-surface-variant">© 2024 AgriScan Management Systems. v2.4.1-stable</p>
+<div class="flex gap-gutter">
+<a class="text-on-surface-variant font-caption text-caption hover:text-primary underline" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant font-caption text-caption hover:text-primary underline" href="#">Terms of Service</a>
+<a class="text-on-surface-variant font-caption text-caption hover:text-primary underline" href="#">Field Guides</a>
+<a class="text-on-surface-variant font-caption text-caption hover:text-primary underline" href="#">Contact Expert</a>
+</div>
+</footer>
+</main>
+<!-- Toast Container Styles -->
+<style>
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+}
+.toast-card {
+    background: #ffffff;
+    color: #191c1d;
+    border-left: 6px solid #116c4a;
+    box-shadow: 0 4px 12px rgba(1, 45, 29, 0.15);
+    padding: 16px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transform: translateX(120%);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: auto;
+    max-width: 320px;
+}
+.toast-card.show { transform: translateX(0); }
+.toast-card.error { border-left-color: #ba1a1a; }
+.toast-card.info { border-left-color: #1b4332; }
+</style>
+
+<script>
+        // Global Toast Notification Helper
+        window.showToast = function(message, type = 'success') {
+            let container = document.getElementById('global-toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'global-toast-container';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+            
+            const card = document.createElement('div');
+            card.className = `toast-card ${type}`;
+            
+            let iconName = 'check_circle';
+            if (type === 'error') iconName = 'error';
+            if (type === 'info') iconName = 'info';
+            
+            card.innerHTML = `
+                <span class="material-symbols-outlined text-[24px]" style="color: ${type==='success'?'#116c4a':type==='error'?'#ba1a1a':'#1b4332'}">${iconName}</span>
+                <span class="font-label-md text-label-md text-[#191c1d]">${message}</span>
+            `;
+            
+            container.appendChild(card);
+            
+            setTimeout(() => { card.classList.add('show'); }, 10);
+            setTimeout(() => {
+                card.classList.remove('show');
+                setTimeout(() => { card.remove(); }, 300);
+            }, 3500);
+        };
+
+        function switchTab(type) {
+            const tabs = ['organic', 'chemical'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const content = document.getElementById(`content-${t}`);
+                if (t === type) {
+                    btn.classList.add('text-primary', 'border-primary');
+                    btn.classList.remove('text-on-surface-variant', 'border-transparent');
+                    content.classList.remove('hidden');
+                    content.classList.add('grid');
+                } else {
+                    btn.classList.remove('text-primary', 'border-primary');
+                    btn.classList.add('text-on-surface-variant', 'border-transparent');
+                    content.classList.add('hidden');
+                    content.classList.remove('grid');
+                }
+            });
+        }
+
+        let activeTreatmentDisease = 'Tomato Early Blight';
+        let activeTreatmentData = null;
+
+        const TREATMENT_DATABASE = {
+            'Tomato Late Blight': {
+                crop: 'Tomato Crop',
+                pathogen: 'Phytophthora infestans',
+                fieldZone: 'Field A-12',
+                urgency: 'Immediate Action Required (24-48 Hours)',
+                organic: [
+                    { num: '1', title: 'Prune & Destroy Blighted Leaves', desc: 'Carefully clip infected leaflets showing dark water-soaked spots. Sterilize pruning shears between cuts using 70% isopropyl alcohol. Do not compost clipped foliage; bury or incinerate.' },
+                    { num: '2', title: 'Apply Copper Hydroxide (Bordeaux Mixture 1%)', desc: 'Spray OMRI-listed Copper Oxychloride 50% WP (3 g/L) or Bordeaux mixture thoroughly across both leaf surfaces in the late afternoon to stop fungal spore germination.' },
+                    { num: '3', title: 'Mulching & Drip Conversion', desc: 'Apply a 3-inch straw mulch layer around base of vines to prevent soil-splash spore dispersal. Switch from overhead sprinklers to drip irrigation immediately.' }
+                ],
+                chemical: [
+                    { label: 'A', title: 'Metalaxyl-M + Mancozeb (Ridomil Gold MZ 68WP)', desc: 'Systemic curative fungicide at 2.5 g per liter of water. Penetrates leaf cuticle within 30 minutes to halt expanding mycelium. Observe 7-day PHI.' },
+                    { label: 'B', title: 'Cymoxanil 8% + Mancozeb 64% WP', desc: 'Translaminar kickback fungicide at 2 g/L. Apply when weather forecasts anticipate prolonged humidity (>90%) and rain. Maximum 3 applications per cycle.' }
+                ]
+            },
+            'Tomato Early Blight': {
+                crop: 'Tomato Crop',
+                pathogen: 'Alternaria solani',
+                fieldZone: 'Field A-12',
+                urgency: 'Act within 3 to 5 Days',
+                organic: [
+                    { num: '1', title: 'Prune Infected Leaves', desc: 'Carefully remove leaves showing dark concentric rings. Sterilize pruning shears between each cut using 70% isopropyl alcohol to avoid cross-contamination.' },
+                    { num: '2', title: 'Apply Copper Fungicide', desc: 'Use an OMRI-listed copper soap. Apply thoroughly to both sides of the leaves every 7-10 days, preferably in the late afternoon to prevent leaf burn.' },
+                    { num: '3', title: 'Compost Management', desc: 'Do not compost infected trimmings. Burn or dispose of them in sealed bags to eliminate fungal spores from your farm\'s ecosystem.' }
+                ],
+                chemical: [
+                    { label: 'A', title: 'Chlorothalonil Spray (75 WP)', desc: 'Standard protective broad-spectrum fungicide. Apply at 2 g/L. Ensure full coverage on canopy. Observe a 7-day pre-harvest interval.' },
+                    { label: 'B', title: 'Azoxystrobin (Amistar 23% SC)', desc: 'Strobilurin-based systemic fungicide (FRAC Group 11) at 1 ml/L. Rotational curative control to halt lesion enlargement and protect new growth.' }
+                ]
+            },
+            'Corn Common Rust': {
+                crop: 'Maize (Corn)',
+                pathogen: 'Puccinia sorghi',
+                fieldZone: 'Field B-4',
+                urgency: 'Action Recommended within 5 Days',
+                organic: [
+                    { num: '1', title: 'Sulfur Dusting / Spray (80 WDG)', desc: 'Apply wettable sulfur at 2 g/L during early morning hours. Sulfur vapor creates an inhospitable zone on leaf epidermis preventing rust spore entry.' },
+                    { num: '2', title: 'Potassium Bicarbonate Solution', desc: 'Mix 5 g potassium bicarbonate with 3 ml horticultural mineral oil per liter of water. Alters leaf surface pH, desensitizing fungal rust germ tubes.' },
+                    { num: '3', title: 'Canopy Thinning for Airflow', desc: 'Selective thinning of outer lower corn leaves to reduce localized humidity. Improved airflow significantly reduces rust pustule expansion.' }
+                ],
+                chemical: [
+                    { label: 'A', title: 'Propiconazole 25 EC (Tilt)', desc: 'Triazole systemic fungicide applied at 1 ml/L upon initial observation of orange pustules on lower leaves. Excellent curative and anti-sporulant action.' },
+                    { label: 'B', title: 'Azoxystrobin + Difenoconazole', desc: 'Dual mode of action (FRAC 11 + 3) applied at 1 ml/L. Provides both preventative shield and therapeutic eradication across corn ears and canopy.' }
+                ]
+            },
+            'Powdery Mildew': {
+                crop: 'Vegetable Crops',
+                pathogen: 'Erysiphe spp.',
+                fieldZone: 'Field D-7',
+                urgency: 'Act within 1 Week',
+                organic: [
+                    { num: '1', title: 'Diluted Milk Foliar Spray', desc: 'Prepare a 1:9 ratio of raw milk to water. Naturally occurring lactoferrin and sunlight interact to produce free radicals that break down powdery fungal mycelium.' },
+                    { num: '2', title: 'Potassium Bicarbonate (3 g/L)', desc: 'Safe contact fungicide. Spray thoroughly to cover the white fungal patches on leaf surfaces. Repeat every 5 to 7 days.' },
+                    { num: '3', title: 'Neem Oil Emulsion (5 ml/L)', desc: 'Cold-pressed neem oil mixed with organic liquid soap. Suppresses fungal spore formation while simultaneously preventing aphid and mite outbreaks.' }
+                ],
+                chemical: [
+                    { label: 'A', title: 'Myclobutanil 10 WP (Systhane)', desc: 'Systemic sterol biosynthesis inhibitor at 1 g/L. Penetrates leaf surfaces rapidly and provides protective/curative control against powdery mildew.' },
+                    { label: 'B', title: 'Hexaconazole 5% EC (Contaf)', desc: 'High-efficacy systemic fungicide at 2 ml/L. Best applied early morning. Ensures long residual protection across active vegetable plots.' }
+                ]
+            },
+            'Yellow Leaf Mosaic': {
+                crop: 'Pepper / Tomato Crop',
+                pathogen: 'Tomato Yellow Leaf Curl Virus (TYLCV)',
+                fieldZone: 'Field E-3',
+                urgency: 'Immediate Vector Control & Rogueing',
+                organic: [
+                    { num: '1', title: 'Rogue Infected Plants Immediately', desc: 'Uproot severely stunted or yellow curled plants and bag them securely. Viral infections cannot be cured with chemical fungicides.' },
+                    { num: '2', title: 'Deploy Yellow Sticky Traps', desc: 'Install 25 yellow sticky card traps per acre at canopy height to capture and monitor whitefly vector populations that spread the virus.' },
+                    { num: '3', title: 'Silver Reflective Mulch', desc: 'Install UV-reflective aluminized plastic mulch around garden beds to disorient flying whiteflies and prevent vector feeding.' }
+                ],
+                chemical: [
+                    { label: 'A', title: 'Imidacloprid 17.8 SL (Vector Control)', desc: 'Systemic neonicotinoid insecticide applied at 0.5 ml/L to eliminate whitefly vectors transmitting the viral pathogen.' },
+                    { label: 'B', title: 'Thiamethoxam 25 WG', desc: 'Foliar or drip application at 0.3 g/L to protect healthy adjacent rows from vector transmission and rapid virus dispersion.' }
+                ]
+            },
+            'Healthy Crop (No Disease)': {
+                crop: 'General Crop Specimen',
+                pathogen: 'None (Healthy Tissue)',
+                fieldZone: 'Field C-9',
+                urgency: 'Routine Preventative Maintenance',
+                organic: [
+                    { num: '1', title: 'Preventive Neem Oil Spray', desc: 'Maintain routine monthly neem application (5 ml/L) as a bio-pesticide and preventive repellent against airborne fungal spores.' },
+                    { num: '2', title: 'Trichoderma Bio-Inoculation', desc: 'Apply Trichoderma viride to root zone during irrigation to cultivate beneficial root fungi that suppress pathogenic soil-borne microbes.' },
+                    { num: '3', title: 'Balanced Microbial Compost Tea', desc: 'Foliar feed with aerated compost tea every 14 days to coat leaves in beneficial microbiology and maintain natural immunity.' }
+                ],
+                chemical: [
+                    { label: 'A', title: 'Micronutrient Foliar Blend', desc: 'Apply chelated Zinc, Iron, and Boron spray at 1 g/L to enhance chlorophyll synthesis, cuticle thickness, and disease resistance.' },
+                    { label: 'B', title: 'Seaweed Extract Tonic (2 ml/L)', desc: 'Bio-stimulant rich in cytokinins and auxins to build resilience against climatic stress, heat waves, and humidity spikes.' }
+                ]
+            }
+        };
+
+        window.downloadTreatmentPDF = function() {
+            window.showToast("Generating AgriScan Treatment Guide PDF...", "info");
+            try {
+                const { jsPDF } = window.jspdf || {};
+                if (!jsPDF) {
+                    window.showToast("Opening print view...", "info");
+                    window.print();
+                    return;
+                }
+
+                const doc = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                const diagName = activeTreatmentDisease;
+                const info = activeTreatmentData || TREATMENT_DATABASE[diagName] || TREATMENT_DATABASE['Tomato Early Blight'];
+                const dateStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                const docId = 'TRT-' + Math.floor(100000 + Math.random() * 900000);
+
+                // Header Banner
+                doc.setFillColor(1, 45, 29); // #012d1d
+                doc.rect(0, 0, 210, 32, 'F');
+                doc.setFillColor(17, 108, 74);
+                doc.rect(0, 32, 210, 2, 'F');
+
+                doc.setTextColor(255, 255, 255);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(18);
+                doc.text("AgriScan AI - Treatment & Recovery Protocol", 14, 18);
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.setTextColor(165, 208, 185);
+                doc.text("OFFICIAL AGRONOMIC INTERVENTION & FIELD ACTION MANUAL", 14, 25);
+
+                doc.setFontSize(8);
+                doc.setTextColor(255, 255, 255);
+                doc.text(`GUIDE ID: ${docId}`, 155, 15);
+                doc.text(`ISSUED: ${dateStr}`, 155, 20);
+                doc.text(`STATUS: ACTIVE PROTOCOL`, 155, 25);
+
+                let y = 44;
+
+                // Diagnosis Banner
+                doc.setFillColor(243, 244, 245);
+                doc.roundedRect(14, y, 182, 28, 3, 3, 'F');
+                doc.setDrawColor(193, 200, 194);
+                doc.roundedRect(14, y, 182, 28, 3, 3, 'D');
+
+                doc.setTextColor(1, 45, 29);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(12);
+                doc.text(`TARGET DIAGNOSIS: ${diagName.toUpperCase()}`, 20, y + 8);
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(9);
+                doc.setTextColor(65, 72, 68);
+                doc.text(`Crop: ${info.crop}  |  Identified Pathogen: ${info.pathogen}  |  Zone: ${info.fieldZone}`, 20, y + 15);
+
+                doc.setFillColor(186, 26, 26);
+                doc.roundedRect(20, y + 19, 58, 6, 2, 2, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(7.5);
+                doc.text(`URGENCY: ${info.urgency}`, 23, y + 23.5);
+
+                y += 36;
+
+                // Section 1: Organic Interventions
+                doc.setTextColor(1, 45, 29);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.text("1. ORGANIC & BIOLOGICAL ACTION STEPS", 14, y);
+                doc.setDrawColor(17, 108, 74);
+                doc.line(14, y + 1.5, 196, y + 1.5);
+                y += 7;
+
+                info.organic.forEach((step, idx) => {
+                    doc.setFillColor(240, 249, 244);
+                    doc.roundedRect(14, y, 182, 20, 2, 2, 'F');
+                    doc.setDrawColor(161, 244, 200);
+                    doc.roundedRect(14, y, 182, 20, 2, 2, 'D');
+
+                    doc.setFillColor(17, 108, 74);
+                    doc.circle(21, y + 10, 4, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(8);
+                    doc.text(step.num, 19.8, y + 12.5);
+
+                    doc.setTextColor(17, 108, 74);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(9);
+                    doc.text(`Step ${step.num}: ${step.title}`, 28, y + 6);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(8);
+                    doc.setTextColor(25, 28, 29);
+                    const descL = doc.splitTextToSize(step.desc, 162);
+                    doc.text(descL, 28, y + 11);
+
+                    y += 24;
+                });
+
+                y += 4;
+
+                // Section 2: Chemical Interventions
+                doc.setTextColor(1, 45, 29);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.text("2. CHEMICAL & SYSTEMIC FUNGICIDE PROTOCOL", 14, y);
+                doc.setDrawColor(17, 108, 74);
+                doc.line(14, y + 1.5, 196, y + 1.5);
+                y += 7;
+
+                info.chemical.forEach((step, idx) => {
+                    doc.setFillColor(254, 247, 240);
+                    doc.roundedRect(14, y, 182, 20, 2, 2, 'F');
+                    doc.setDrawColor(249, 115, 22);
+                    doc.roundedRect(14, y, 182, 20, 2, 2, 'D');
+
+                    doc.setFillColor(180, 83, 9);
+                    doc.circle(21, y + 10, 4, 'F');
+                    doc.setTextColor(255, 255, 255);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(8);
+                    doc.text(step.label, 19.5, y + 12.5);
+
+                    doc.setTextColor(180, 83, 9);
+                    doc.setFont('helvetica', 'bold');
+                    doc.setFontSize(9);
+                    doc.text(`Option ${step.label}: ${step.title}`, 28, y + 6);
+
+                    doc.setFont('helvetica', 'normal');
+                    doc.setFontSize(8);
+                    doc.setTextColor(25, 28, 29);
+                    const descL = doc.splitTextToSize(step.desc, 162);
+                    doc.text(descL, 28, y + 11);
+
+                    y += 24;
+                });
+
+                y += 4;
+
+                // Section 3: Cultural Preventive Measures
+                doc.setTextColor(1, 45, 29);
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(11);
+                doc.text("3. CULTURAL PREVENTATIVE PRACTICES", 14, y);
+                doc.setDrawColor(17, 108, 74);
+                doc.line(14, y + 1.5, 196, y + 1.5);
+                y += 7;
+
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(8.5);
+                doc.setTextColor(40, 40, 40);
+                doc.text("• Crop Rotation: Avoid planting same family crops in consecutive seasons (3-year rotation recommended).", 18, y);
+                y += 5;
+                doc.text("• Irrigation Timing: Irrigate between 05:00 AM and 07:00 AM using drip lines to avoid canopy moisture.", 18, y);
+                y += 5;
+                doc.text("• Foliage Spacing: Maintain at least 24 inches between plants for continuous airflow through canopy.", 18, y);
+
+                // Footer
+                doc.setFillColor(243, 244, 245);
+                doc.rect(0, 275, 210, 22, 'F');
+                doc.setDrawColor(193, 200, 194);
+                doc.line(0, 275, 210, 275);
+
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(8);
+                doc.setTextColor(1, 45, 29);
+                doc.text("Supervising Agronomist: Officer Michael Chen (+91-80-AGRISCAN)", 14, 282);
+                doc.setFont('helvetica', 'normal');
+                doc.setFontSize(7.5);
+                doc.setTextColor(113, 121, 115);
+                doc.text("Always adhere to localized chemical label instructions, pre-harvest intervals (PHI), and proper personal protective equipment (PPE).", 14, 287);
+                doc.text(`Official AgriScan Guide Reference: ${docId}  |  Certified Clean Field Protocol`, 14, 292);
+
+                const cleanName = diagName.replace(/[^a-zA-Z0-9]/g, '_');
+                doc.save(`AgriScan_Treatment_Guide_${cleanName}.pdf`);
+                window.showToast("AgriScan Treatment Guide PDF downloaded successfully!", "success");
+            } catch(err) {
+                console.error("PDF generation failed:", err);
+                window.showToast("Opening print view...", "info");
+                window.print();
+            }
+        };
+
+        // Attach action handlers & populate dynamic data
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedDiagnosis = sessionStorage.getItem('uploaded_leaf_diagnosis');
+            const savedData = sessionStorage.getItem('uploaded_leaf_data');
+            const savedImage = sessionStorage.getItem('uploaded_leaf_image');
+
+            if (savedDiagnosis && TREATMENT_DATABASE[savedDiagnosis]) {
+                activeTreatmentDisease = savedDiagnosis;
+                const info = TREATMENT_DATABASE[savedDiagnosis];
+                activeTreatmentData = info;
+
+                // Update Hero Section
+                const badge = document.getElementById('treatment-diag-badge');
+                if (badge) badge.textContent = `Diagnosis: ${savedDiagnosis}`;
+
+                const title = document.getElementById('treatment-hero-title');
+                if (title) title.textContent = `Recovery Plan: ${savedDiagnosis}`;
+
+                const desc = document.getElementById('treatment-hero-desc');
+                if (desc) {
+                    desc.textContent = `Based on your recent scan of ${info.fieldZone} (${info.crop}), we have identified signs of ${info.pathogen}. ${info.urgency}.`;
+                }
+
+                const heroImg = document.getElementById('treatment-hero-img');
+                if (heroImg && savedImage) {
+                    heroImg.src = savedImage;
+                }
+
+                // Update Organic Cards
+                const organicContainer = document.getElementById('content-organic');
+                if (organicContainer && info.organic) {
+                    organicContainer.innerHTML = info.organic.map(step => `
+                        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+                            <div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold text-xl mb-4">${step.num}</div>
+                            <h5 class="font-title-md text-title-md text-primary mb-2">${step.title}</h5>
+                            <p class="text-on-surface-variant">${step.desc}</p>
+                        </div>
+                    `).join('');
+                }
+
+                // Update Chemical Cards
+                const chemicalContainer = document.getElementById('content-chemical');
+                if (chemicalContainer && info.chemical) {
+                    chemicalContainer.innerHTML = info.chemical.map(step => `
+                        <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+                            <div class="w-12 h-12 rounded-full bg-error-container text-on-error-container flex items-center justify-center font-bold text-xl mb-4">${step.label}</div>
+                            <h5 class="font-title-md text-title-md text-primary mb-2">${step.title}</h5>
+                            <p class="text-on-surface-variant">${step.desc}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+
+            // PDF Guide Button
+            const pdfBtn = document.getElementById('treatment-pdf-btn');
+            if (pdfBtn) {
+                pdfBtn.onclick = () => { window.downloadTreatmentPDF(); };
+            }
+
+            // Share Button
+            const shareBtn = document.getElementById('treatment-share-btn');
+            if (shareBtn) {
+                shareBtn.onclick = () => {
+                    const text = `AgriScan Treatment Plan for ${activeTreatmentDisease}. Check official recovery steps.`;
+                    if (navigator.share) {
+                        navigator.share({ title: `Treatment Plan: ${activeTreatmentDisease}`, text: text, url: window.location.href }).catch(() => {});
+                    } else {
+                        if (navigator.clipboard) navigator.clipboard.writeText(window.location.href).catch(() => {});
+                        window.showToast("Treatment guide link copied to clipboard!", "success");
+                    }
+                };
+            }
+
+            // Other interactive buttons
+            document.querySelectorAll('button').forEach(btn => {
+                if (btn.textContent.includes('Call Agriculture Officer')) {
+                    btn.onclick = () => {
+                        window.showToast("Connecting hotline to Officer Michael Chen (+91-80-AGRISCAN)...", "success");
+                    };
+                }
+                if (btn.textContent.includes('Chat with Expert')) {
+                    btn.onclick = () => {
+                        window.showToast("Starting live agronomist chat session...", "info");
+                    };
+                }
+                if (btn.textContent.includes('View Schedule')) {
+                    btn.onclick = () => {
+                        window.showToast("Optimal irrigation schedule: 05:30 AM - 06:15 AM (Drip line active)", "info");
+                    };
+                }
+            });
+
+            // Smooth page navigation on links
+            document.querySelectorAll('a[href]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (!href || href.startsWith('#') || href.startsWith('javascript') || href.startsWith('mailto') || href.startsWith('tel')) return;
+                    if (link.target === '_blank') return;
+                    e.preventDefault();
+                    document.body.classList.add('page-exit');
+                    setTimeout(() => { window.location.href = href; }, 200);
+                });
+            });
+        });
+    </script>
+<!-- Mobile Bottom Nav Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-outline-variant flex justify-around items-center py-2 px-2">
+  <a href="../agriscan_dashboard/code.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">grid_view</span>
+    <span class="text-[10px] font-medium">Dashboard</span>
+  </a>
+  <a href="../scan_portal/code.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">camera</span>
+    <span class="text-[10px] font-medium">Scan</span>
+  </a>
+  <a href="../history_log/code.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">history</span>
+    <span class="text-[10px] font-medium">History</span>
+  </a>
+  <a href="../treatment_guides/code.html" class="flex flex-col items-center gap-0.5 text-primary px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">healing</span>
+    <span class="text-[10px] font-bold">Treatment</span>
+  </a>
+  <a href="../index.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">apps</span>
+    <span class="text-[10px] font-medium">Hub</span>
+  </a>
+</nav>
+</body></html>

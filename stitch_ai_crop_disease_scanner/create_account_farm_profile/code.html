@@ -1,0 +1,606 @@
+﻿<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgriScan Pro | Farm Profile Setup</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .crop-card.selected {
+            border-color: #1b4332;
+            background-color: #a1f4c8;
+        }
+        .crop-card.selected .check-icon {
+            display: flex;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed-variant": "#005236",
+                      "background": "#f8f9fa",
+                      "primary-container": "#1b4332",
+                      "surface-container": "#edeeef",
+                      "on-secondary-fixed": "#002113",
+                      "error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#2d150d",
+                      "inverse-surface": "#2e3132",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-on-surface": "#f0f1f2",
+                      "secondary": "#116c4a",
+                      "surface-dim": "#d9dadb",
+                      "error": "#ba1a1a",
+                      "tertiary": "#3a2017",
+                      "secondary-fixed": "#a1f4c8",
+                      "outline": "#717973",
+                      "on-surface-variant": "#414844",
+                      "tertiary-fixed": "#ffdbcf",
+                      "on-secondary-container": "#1b724f",
+                      "inverse-primary": "#a5d0b9",
+                      "secondary-fixed-dim": "#86d7ad",
+                      "on-primary-container": "#86af99",
+                      "on-error": "#ffffff",
+                      "on-background": "#191c1d",
+                      "on-secondary": "#ffffff",
+                      "surface-tint": "#3f6653",
+                      "secondary-container": "#a1f4c8",
+                      "primary": "#012d1d",
+                      "surface-variant": "#e1e3e4",
+                      "on-error-container": "#93000a",
+                      "surface-bright": "#f8f9fa",
+                      "outline-variant": "#c1c8c2",
+                      "on-surface": "#191c1d",
+                      "primary-fixed-dim": "#a5d0b9",
+                      "on-primary": "#ffffff",
+                      "surface-container-high": "#e7e8e9",
+                      "on-primary-fixed-variant": "#274e3d",
+                      "surface-container-low": "#f3f4f5",
+                      "surface": "#f8f9fa",
+                      "on-tertiary-fixed-variant": "#5e3f35",
+                      "on-tertiary-container": "#c79d90",
+                      "surface-container-highest": "#e1e3e4",
+                      "tertiary-fixed-dim": "#e9bdae",
+                      "tertiary-container": "#52352b",
+                      "on-primary-fixed": "#002114",
+                      "primary-fixed": "#c1ecd4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "container-margin-mobile": "16px",
+                      "container-margin-desktop": "64px",
+                      "touch-target-min": "48px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Inter"],
+                      "headline-lg": ["Inter"],
+                      "title-md": ["Inter"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "caption": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+              }
+            },
+          },
+        };
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .crop-card.selected {
+            border-color: #116c4a !important; /* secondary */
+            background-color: #a1f4c8 !important; /* secondary-fixed */
+        }
+        .crop-card.selected .check-icon {
+            display: flex !important;
+        }
+        
+        /* Suggestions styling */
+        .autocomplete-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #c1c8c2;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(1, 45, 29, 0.12);
+            z-index: 30;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .suggestion-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .suggestion-item:hover {
+            background-color: #f3f4f5;
+        }
+        
+        /* Custom Toast Notification styles */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: none;
+        }
+        .toast-card {
+            background: #ffffff;
+            color: #191c1d;
+            border-left: 6px solid #116c4a;
+            box-shadow: 0 4px 12px rgba(1, 45, 29, 0.15);
+            padding: 16px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateX(120%);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: auto;
+            max-width: 320px;
+        }
+        .toast-card.show {
+            transform: translateX(0);
+        }
+        .toast-card.error {
+            border-left-color: #ba1a1a;
+        }
+        /* === Smooth Page Transition === */
+        @keyframes pageEntrance {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        body {
+            animation: pageEntrance 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        .page-exit {
+            animation: pageExit 0.25s ease-in forwards !important;
+        }
+        @keyframes pageExit {
+            to { opacity: 0; transform: translateY(-8px); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<!-- TopAppBar -->
+<header class="bg-surface shadow-sm docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center w-full px-container-margin-mobile md:px-container-margin-desktop h-touch-target-min">
+<div class="flex items-center gap-4">
+    <a href="../index.html" class="flex items-center gap-1.5 text-xs font-bold text-secondary bg-secondary-container px-3 py-1 rounded-full hover:opacity-90 transition-opacity">
+        <span class="material-symbols-outlined text-[16px]">arrow_back</span> Hub
+    </a>
+    <a href="../index.html" class="font-display-lg text-headline-lg-mobile md:text-display-lg font-bold text-primary hover:opacity-90">AgriScan</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary" data-icon="language">language</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container-high transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-caption overflow-hidden cursor-pointer" onclick="window.location.href='../login/code.html';" title="Logout">
+<img alt="User profile settings" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKEn8UzSj9mm-JjXN1jR0M5LiKrpqTZmMW32deM82245MFRm84e3oMUnZZqDwWOMI32Yf6fGUwdlYA6Avwkvhn59iabnkH-Fx57eY-_FM6AuZHkK2uIzc009G1IMQQyzUuNUfFeH20-ABYnNpS3ZF4LacoXR6fbieljXXD6_xzDemBm5-q50rE5rH2eoKV5Qu3x9-_X78e1s29-X4WOgny2hVbFtq0_jHwtyA8nNBCh18vifFwJaqXvCT_RVPp0a2CaZCSTOMbNA"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto px-container-margin-mobile md:px-container-margin-desktop py-unit-x8">
+<!-- Progress Stepper -->
+<div class="mb-12 flex items-center justify-center">
+<div class="flex items-center w-full max-w-lg">
+<div class="relative flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white mb-2 shadow-sm">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<span class="font-label-md text-label-md text-primary">Account</span>
+</div>
+<div class="flex-1 h-0.5 bg-primary mx-2 mb-6"></div>
+<div class="relative flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white mb-2 shadow-sm ring-4 ring-secondary-fixed">
+<span class="material-symbols-outlined" data-icon="agriculture">agriculture</span>
+</div>
+<span class="font-label-md text-label-md text-primary font-bold">Farm Profile</span>
+</div>
+<div class="flex-1 h-0.5 bg-outline-variant mx-2 mb-6"></div>
+<div class="relative flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-outline mb-2">
+<span class="material-symbols-outlined" data-icon="done_all">done_all</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Review</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main Setup Section -->
+<div class="lg:col-span-8 space-y-gutter">
+<!-- Welcome Section -->
+<div class="bg-surface-container-lowest p-gutter rounded-xl shadow-sm border border-outline-variant">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary mb-2">Build Your Farm Digital Twin</h2>
+<p class="text-body-lg text-on-surface-variant max-w-2xl">Help us customize your experience by selecting your crops and setting your location for precision climate monitoring.</p>
+</div>
+<!-- Crop Selection -->
+<section class="bg-surface-container-lowest p-gutter rounded-xl shadow-sm border border-outline-variant">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h3 class="font-title-md text-title-md text-primary">Crops You Grow</h3>
+<p class="font-label-md text-label-md text-on-surface-variant">Select all that apply to your current season</p>
+</div>
+<span class="font-label-md text-label-md bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full">Season: Spring 2024</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+<!-- Crop Card Item -->
+<button class="crop-card relative group flex flex-col items-center p-4 rounded-xl border-2 border-outline-variant bg-surface-bright hover:bg-surface-container-low transition-all active:scale-95 h-touch-target-min min-h-[140px] justify-center text-center" onclick="toggleCrop(this)">
+<div class="check-icon hidden absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-container text-white items-center justify-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<span class="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform" data-icon="grass">grass</span>
+<span class="font-label-md text-label-md text-primary">Corn</span>
+</button>
+<button class="crop-card relative group flex flex-col items-center p-4 rounded-xl border-2 border-outline-variant bg-surface-bright hover:bg-surface-container-low transition-all active:scale-95 min-h-[140px] justify-center text-center" onclick="toggleCrop(this)">
+<div class="check-icon hidden absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-container text-white items-center justify-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<span class="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform" data-icon="potted_plant">potted_plant</span>
+<span class="font-label-md text-label-md text-primary">Soybeans</span>
+</button>
+<button class="crop-card relative group flex flex-col items-center p-4 rounded-xl border-2 border-outline-variant bg-surface-bright hover:bg-surface-container-low transition-all active:scale-95 min-h-[140px] justify-center text-center" onclick="toggleCrop(this)">
+<div class="check-icon hidden absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-container text-white items-center justify-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<span class="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform" data-icon="eco">eco</span>
+<span class="font-label-md text-label-md text-primary">Wheat</span>
+</button>
+<button class="crop-card relative group flex flex-col items-center p-4 rounded-xl border-2 border-outline-variant bg-surface-bright hover:bg-surface-container-low transition-all active:scale-95 min-h-[140px] justify-center text-center" onclick="toggleCrop(this)">
+<div class="check-icon hidden absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-container text-white items-center justify-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<span class="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform" data-icon="nutrition">nutrition</span>
+<span class="font-label-md text-label-md text-primary">Tomato</span>
+</button>
+<button class="crop-card relative group flex flex-col items-center p-4 rounded-xl border-2 border-outline-variant bg-surface-bright hover:bg-surface-container-low transition-all active:scale-95 min-h-[140px] justify-center text-center" onclick="toggleCrop(this)">
+<div class="check-icon hidden absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-container text-white items-center justify-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<span class="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform" data-icon="filter_hdr">filter_hdr</span>
+<span class="font-label-md text-label-md text-primary">Grapes</span>
+</button>
+<button class="crop-card relative group flex flex-col items-center p-4 rounded-xl border-2 border-outline-variant bg-surface-bright hover:bg-surface-container-low transition-all active:scale-95 min-h-[140px] justify-center text-center" onclick="toggleCrop(this)">
+<div class="check-icon hidden absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-container text-white items-center justify-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<span class="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform" data-icon="yard">yard</span>
+<span class="font-label-md text-label-md text-primary">Potatoes</span>
+</button>
+<button class="crop-card relative group flex flex-col items-center p-4 rounded-xl border-2 border-outline-variant bg-surface-bright hover:bg-surface-container-low transition-all active:scale-95 min-h-[140px] justify-center text-center" onclick="toggleCrop(this)">
+<div class="check-icon hidden absolute top-2 right-2 w-6 h-6 rounded-full bg-primary-container text-white items-center justify-center">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<span class="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform" data-icon="energy_savings_leaf">energy_savings_leaf</span>
+<span class="font-label-md text-label-md text-primary">Cotton</span>
+</button>
+<button class="group flex flex-col items-center p-4 rounded-xl border-2 border-dashed border-outline-variant bg-surface-container-low hover:bg-surface-container hover:border-outline transition-all active:scale-95 min-h-[140px] justify-center text-center">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2" data-icon="add_circle">add_circle</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Add Other</span>
+</button>
+</div>
+</section>
+<!-- Location Selection -->
+<section class="bg-surface-container-lowest p-gutter rounded-xl shadow-sm border border-outline-variant">
+<h3 class="font-title-md text-title-md text-primary mb-6">Farm Location</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-4">
+<div class="relative">
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2 ml-1">Search Farm Address</label>
+<div class="relative" id="address-container">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="location_on">location_on</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-all text-body-md" id="address-input" placeholder="123 Harvest Road, Ceres County..." type="text" autocomplete="off"/>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 py-3 border border-secondary text-secondary rounded-lg font-label-md hover:bg-secondary-container transition-colors h-touch-target-min active:scale-95" id="gps-button">
+<span class="material-symbols-outlined" data-icon="my_location">my_location</span>
+                                Use My Current Location
+                            </button>
+<div class="pt-4 border-t border-outline-variant">
+<p class="font-label-md text-label-md text-on-surface-variant mb-4">Manual Entry</p>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block font-caption text-caption text-on-surface-variant mb-1">Latitude</label>
+<input class="w-full px-3 py-2 bg-surface border border-outline-variant rounded focus:ring-1 focus:ring-secondary outline-none" id="latitude-input" placeholder="40.7128" type="text"/>
+</div>
+<div>
+<label class="block font-caption text-caption text-on-surface-variant mb-1">Longitude</label>
+<input class="w-full px-3 py-2 bg-surface border border-outline-variant rounded focus:ring-1 focus:ring-secondary outline-none" id="longitude-input" placeholder="-74.0060" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Preview -->
+<div class="relative h-[300px] md:h-auto min-h-[300px] rounded-xl overflow-hidden border border-outline-variant group">
+<img class="w-full h-full object-cover" id="map-preview-img" data-alt="A high-angle satellite-style view of a vast agricultural landscape featuring organized square plots of varying green and golden hues." data-location="Kansas Farmland" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlQUtTYj71EuCZpltyGVJqyJaTLuNE-7rPSiWX1bnP1RVRvg4aEBBYjofO53n-ekinkd8-GpOKr0OlaDnEh3xYVWz33vM8VETZ9dN9qs_UXMU-RTIWwLm1w0hnUmtkqDFBtPo97MWLAZYT0P5uuWiBEEMzBfZSwq2tIsxkuKIkRQr-nFxypV_YN4djWw1881THl5wkILe3620Ypa8lCmnPi3YSX5JIbyjHH--LJw7tk2WG2wx3q9NWrmXngZ8OHFZthkwzdOGR1w"/>
+<div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/90 backdrop-blur-md p-3 rounded-full shadow-lg border border-primary/20">
+<span class="material-symbols-outlined text-primary text-3xl animate-bounce" data-icon="push_pin">push_pin</span>
+</div>
+<div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md p-3 rounded-lg shadow-md border border-outline-variant">
+<p class="font-label-md text-label-md text-primary font-bold" id="map-preview-title">Preview: Central Fields Section</p>
+<p class="font-caption text-caption text-on-surface-variant">Precision alerts will be calibrated to this area.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Side Summary / Tips -->
+<div class="lg:col-span-4 space-y-gutter">
+<div class="bg-primary-container text-on-primary-container p-gutter rounded-xl shadow-lg flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="info">info</span>
+<h4 class="font-title-md text-title-md">Why this matters?</h4>
+</div>
+<p class="text-body-md opacity-90 leading-relaxed">
+                        AgriScan Pro uses your crop types to download specific diagnostic models to your device. This allows for **offline scanning** and **localized pest alerts** even when cellular signal is low in the fields.
+                    </p>
+<div class="mt-2 space-y-3">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="cloud">cloud</span>
+<span class="font-label-md">Localized 7-day weather forecasting</span>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="bug_report">bug_report</span>
+<span class="font-label-md">Regional pest infestation warnings</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-high p-gutter rounded-xl border border-outline-variant">
+<h4 class="font-label-md text-label-md text-primary font-bold mb-3">Farm Statistics</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant">Crops Selected</span>
+<span class="font-bold text-primary" id="crop-count">0</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden">
+<div class="h-full bg-primary transition-all duration-500" id="progress-bar" style="width: 0%"></div>
+</div>
+<p class="font-caption text-caption text-on-surface-variant italic">Select at least one crop to proceed with the activation.</p>
+</div>
+</div>
+<!-- Action Button Group -->
+<div class="pt-6 sticky bottom-gutter space-y-3">
+<button class="w-full py-4 bg-primary text-white rounded-xl font-title-md hover:bg-primary-container transition-all shadow-md active:scale-95 disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2" onclick="window.location.href='../account_created_success/code.html'">
+                        Continue Setup
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<button class="w-full py-3 bg-transparent text-primary rounded-xl font-label-md hover:bg-surface-container-low transition-all h-touch-target-min" onclick="window.location.href='../login/code.html'">
+                        Save and Finish Later
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest border-t border-outline-variant mt-12">
+<div class="flex flex-col md:flex-row justify-between items-center px-container-margin-mobile md:px-container-margin-desktop py-unit-x4 gap-gutter w-full">
+<span class="font-caption text-caption text-on-surface-variant">© 2024 AgriScan Management Systems. v2.4.1-stable</span>
+<div class="flex gap-6">
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary underline" href="#">Privacy Policy</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary underline" href="#">Terms of Service</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary underline" href="#">Field Guides</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary underline" href="#">Contact Expert</a>
+</div>
+</div>
+</footer>
+<script>
+        // Global Toast Notification Helper
+        window.showToast = function(message, type = 'success') {
+            let container = document.getElementById('global-toast-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.id = 'global-toast-container';
+                container.className = 'toast-container';
+                document.body.appendChild(container);
+            }
+            
+            const card = document.createElement('div');
+            card.className = `toast-card ${type}`;
+            
+            let iconName = 'check_circle';
+            if (type === 'error') iconName = 'error';
+            if (type === 'warning') iconName = 'warning';
+            
+            card.innerHTML = `
+                <span class="material-symbols-outlined text-[24px]" style="color: ${type==='success'?'#116c4a':type==='error'?'#ba1a1a':'#3a2017'}">${iconName}</span>
+                <span class="font-label-md text-label-md text-[#191c1d]">${message}</span>
+            `;
+            
+            container.appendChild(card);
+            
+            // Trigger animation
+            setTimeout(() => {
+                card.classList.add('show');
+            }, 10);
+            
+            // Dismiss after 4 seconds
+            setTimeout(() => {
+                card.classList.remove('show');
+                setTimeout(() => {
+                    card.remove();
+                }, 300);
+            }, 4000);
+        };
+
+        // Welcome toast and initial selection
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                window.showToast("Setup your farm twin to load custom crop diagnostics.", "success");
+            }, 500);
+            
+            // Auto-select Tomato & Corn by default for immediate convenience
+            const cards = document.querySelectorAll('.crop-card');
+            if (cards.length >= 2) {
+                cards[0].classList.add('selected');
+                cards[1].classList.add('selected');
+                selectedCrops = 2;
+                updateStats();
+            }
+        });
+
+        let selectedCrops = 0;
+        const totalPossible = 7; // Number of default crop cards
+        const continueBtn = document.querySelector('button.bg-primary.text-white');
+
+        // Manage button state initially
+        if (continueBtn) {
+            continueBtn.disabled = true;
+            continueBtn.style.opacity = '0.5';
+        }
+
+        function toggleCrop(element) {
+            element.classList.toggle('selected');
+            
+            if(element.classList.contains('selected')) {
+                selectedCrops++;
+                window.showToast(`Added ${element.querySelector('.font-label-md').textContent} to farm calibration!`, 'success');
+            } else {
+                selectedCrops--;
+                window.showToast(`Removed ${element.querySelector('.font-label-md').textContent}`, 'warning');
+            }
+            
+            updateStats();
+        }
+
+        function updateStats() {
+            document.getElementById('crop-count').textContent = selectedCrops;
+            const percentage = (selectedCrops / totalPossible) * 100;
+            const progressBar = document.getElementById('progress-bar');
+            if (progressBar) {
+                progressBar.style.width = Math.min(percentage, 100) + '%';
+            }
+
+            if (continueBtn) {
+                if (selectedCrops > 0) {
+                    continueBtn.disabled = false;
+                    continueBtn.style.opacity = '1';
+                } else {
+                    continueBtn.disabled = true;
+                    continueBtn.style.opacity = '0.5';
+                }
+            }
+        }
+
+        // GPS Geolocation Simulator
+        const gpsBtn = document.getElementById('gps-button');
+        const latInput = document.getElementById('latitude-input');
+        const lonInput = document.getElementById('longitude-input');
+        const addressInput = document.getElementById('address-input');
+        const previewTitle = document.getElementById('map-preview-title');
+
+        if (gpsBtn) {
+            gpsBtn.addEventListener('click', () => {
+                const originalHTML = gpsBtn.innerHTML;
+                gpsBtn.innerHTML = `<span class="material-symbols-outlined animate-spin">sync</span> Locating Farm...`;
+                gpsBtn.disabled = true;
+
+                setTimeout(() => {
+                    // Generate realistic farm coordinates (near Kansas center point)
+                    const randomLat = (39.0119 + (Math.random() - 0.5) * 0.05).toFixed(4);
+                    const randomLon = (-98.4842 + (Math.random() - 0.5) * 0.05).toFixed(4);
+
+                    if (latInput) latInput.value = randomLat;
+                    if (lonInput) lonInput.value = randomLon;
+                    if (addressInput) addressInput.value = "GPS Coordinates, Mitchell Farmland Sector D-3";
+                    if (previewTitle) previewTitle.textContent = "Preview: Calibrated Mitchell Farmland D-3";
+
+                    window.showToast("GPS calibration complete!", "success");
+                    gpsBtn.innerHTML = originalHTML;
+                    gpsBtn.disabled = false;
+                }, 1500);
+            });
+        }
+
+        // Autocomplete search suggestions
+        const searchSuggestions = [
+            { address: "Dharwad Crops Sector 4, Dharwad, KA, India", lat: "15.4589", lon: "75.0078", title: "Dharwad Crops Sector 4" },
+            { address: "Ceres County Maize Parcel 12, Kansas, USA", lat: "39.0520", lon: "-98.3240", title: "Ceres County Maize Parcel 12" },
+            { address: "Napa Valley Grape Fields B-6, California, USA", lat: "38.2975", lon: "-122.2869", title: "Napa Valley Grape Fields B-6" },
+            { address: "Willamette Valley Potato Orchard, Oregon, USA", lat: "44.9429", lon: "-123.0351", title: "Willamette Valley Potato Orchard" }
+        ];
+
+        const addressContainer = document.getElementById('address-container');
+
+        if (addressInput && addressContainer) {
+            addressInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase().trim();
+                
+                // Clear existing dropdown
+                const existing = document.querySelector('.autocomplete-suggestions');
+                if (existing) existing.remove();
+
+                if (!query) return;
+
+                const matches = searchSuggestions.filter(item => item.address.toLowerCase().includes(query));
+                if (matches.length === 0) return;
+
+                const dropdown = document.createElement('div');
+                dropdown.className = 'autocomplete-suggestions';
+
+                matches.forEach(match => {
+                    const item = document.createElement('div');
+                    item.className = 'suggestion-item font-label-md text-sm';
+                    item.textContent = match.address;
+                    item.addEventListener('click', () => {
+                        addressInput.value = match.address;
+                        if (latInput) latInput.value = match.lat;
+                        if (lonInput) lonInput.value = match.lon;
+                        if (previewTitle) previewTitle.textContent = "Preview: " + match.title;
+                        
+                        window.showToast(`Calibrated map to ${match.title}!`, 'success');
+                        dropdown.remove();
+                    });
+                    dropdown.appendChild(item);
+                });
+
+                addressContainer.appendChild(dropdown);
+            });
+
+            // Close suggestions on outside click
+            document.addEventListener('click', (e) => {
+                if (e.target !== addressInput) {
+                    const dropdown = document.querySelector('.autocomplete-suggestions');
+                    if (dropdown) dropdown.remove();
+                }
+            });
+        }
+    </script>
+</body></html>

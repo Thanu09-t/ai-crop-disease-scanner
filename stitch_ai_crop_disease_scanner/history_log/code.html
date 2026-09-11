@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgriScan | History Log</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#3a2017",
+                    "on-secondary-container": "#1b724f",
+                    "on-primary-fixed": "#002114",
+                    "surface-variant": "#e1e3e4",
+                    "primary-fixed-dim": "#a5d0b9",
+                    "outline": "#717973",
+                    "on-primary-fixed-variant": "#274e3d",
+                    "surface-container-highest": "#e1e3e4",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c1c8c2",
+                    "surface-bright": "#f8f9fa",
+                    "secondary-fixed": "#a1f4c8",
+                    "inverse-primary": "#a5d0b9",
+                    "on-background": "#191c1d",
+                    "on-tertiary-fixed": "#2d150d",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#2e3132",
+                    "surface-dim": "#d9dadb",
+                    "inverse-on-surface": "#f0f1f2",
+                    "background": "#f8f9fa",
+                    "tertiary-fixed": "#ffdbcf",
+                    "tertiary-container": "#52352b",
+                    "on-primary-container": "#86af99",
+                    "on-surface-variant": "#414844",
+                    "primary-container": "#1b4332",
+                    "surface-container-low": "#f3f4f5",
+                    "primary": "#012d1d",
+                    "on-error": "#ffffff",
+                    "surface-tint": "#3f6653",
+                    "primary-fixed": "#c1ecd4",
+                    "surface": "#f8f9fa",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#5e3f35",
+                    "error-container": "#ffdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#86d7ad",
+                    "secondary": "#116c4a",
+                    "on-tertiary-container": "#c79d90",
+                    "secondary-container": "#a1f4c8",
+                    "surface-container": "#edeeef",
+                    "on-secondary-fixed": "#002113",
+                    "on-secondary-fixed-variant": "#005236",
+                    "surface-container-high": "#e7e8e9",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#e9bdae",
+                    "on-surface": "#191c1d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "container-margin-desktop": "64px",
+                    "gutter": "16px",
+                    "container-margin-mobile": "16px",
+                    "touch-target-min": "48px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "caption": ["Inter"],
+                    "title-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrolled-header {
+            background-color: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(224, 224, 224, 0.5);
+        }
+        /* === Smooth Page Transition === */
+        @keyframes pageEntrance {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        body {
+            animation: pageEntrance 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        .page-exit {
+            animation: pageExit 0.25s ease-in forwards !important;
+        }
+        @keyframes pageExit {
+            to { opacity: 0; transform: translateY(-8px); }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- Wrapper for Sidebar + Content -->
+<div class="flex h-screen overflow-hidden">
+<!-- SideNavBar Component -->
+<aside class="hidden md:flex flex-col h-full py-unit overflow-y-auto bg-surface-container-low border-r border-outline-variant w-72 shrink-0">
+<div class="px-6 mb-8 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div>
+<h2 class="font-title-md text-title-md font-bold text-primary">AgriScan Pro</h2>
+<p class="font-caption text-caption text-on-surface-variant">Connectivity: Online</p>
+</div>
+</div>
+<a href="../index.html" class="text-xs bg-secondary-container text-on-secondary-container px-2.5 py-1 rounded-full font-bold hover:opacity-90 transition-opacity">
+    Hub
+</a>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container hover:text-on-secondary-container transition-all rounded-lg" href="../agriscan_dashboard/code.html">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container hover:text-on-secondary-container transition-all rounded-lg" href="../scan_portal/code.html">
+<span class="material-symbols-outlined" data-icon="camera">camera</span>
+<span class="font-label-md text-label-md">Scan Portal</span>
+</a>
+<!-- Active Tab: History Log -->
+<a class="bg-primary-container text-on-primary-container font-bold rounded-lg px-4 py-3 flex items-center gap-3 active:scale-95 transition-transform duration-200" href="../history_log/code.html">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History Log</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-secondary-container hover:text-on-secondary-container transition-all rounded-lg" href="../treatment_guides/code.html">
+<span class="material-symbols-outlined" data-icon="healing">healing</span>
+<span class="font-label-md text-label-md">Treatment Guides</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-1 border-t border-outline-variant pt-4">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-variant transition-colors rounded-lg" href="../index.html">
+<span class="material-symbols-outlined" data-icon="apps">apps</span>
+<span class="font-label-md text-label-md">Portal Hub Directory</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0 bg-background overflow-y-auto">
+<!-- TopAppBar Component -->
+<header class="flex justify-between items-center w-full px-4 md:px-16 h-touch-target-min bg-surface shadow-sm sticky top-0 z-10">
+<div class="flex items-center gap-gutter">
+<a href="../index.html" class="md:hidden text-xs bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-bold">← Hub</a>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">Disease History</h1>
+</div>
+<div class="flex items-center gap-4">
+<!-- Sync Button -->
+<button id="sync-button" class="flex items-center gap-2 bg-secondary text-on-secondary px-4 py-2 rounded-full font-label-md text-label-md hover:opacity-90 transition-opacity active:scale-95 duration-200 cursor-pointer">
+<span class="material-symbols-outlined text-[20px]" data-icon="sync">sync</span>
+                        Sync 3 pending scans to cloud
+                    </button>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="language">language</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors relative">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface"></span>
+</button>
+<img alt="User profile" class="w-8 h-8 rounded-full border border-outline-variant cursor-pointer active:scale-95 transition-transform" data-alt="A professional headshot of a middle-aged agronomist." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-aQd_LJY9TFwTls_xlZa7Q4B6gy2MiE7gRaItS-EcOWI223FsG9UyE0UST5SnNvP8H55b4FrMQsrnbYtV9RcISi8eGcwZEw9RRicq0jtjqBIadrjHQs9fus-uoSxZXia6CRc0JToMgj58Q3PFzwAyNlkVuCdASix3oUW-iPRMtDdqfYQ8NdQ9KL1TrQgZSH57YaUUp4KgCaJH0JTEKuX75C-ZXZfOr0B_wAoVAf9GK_IWyiqsRTBfBHuFJioLVeZwr9ClMbi7NA" onclick="window.location.href='../login/code.html';" title="Logout"/>
+</div>
+</div>
+</header>
+<div class="p-4 md:p-16 space-y-4 max-w-[1280px] mx-auto w-full pb-24 md:pb-8">
+<!-- Filters and Search -->
+<section class="glass-card p-6 rounded-xl shadow-sm flex flex-col md:flex-row gap-4 items-center justify-between">
+<div class="relative w-full md:w-96 group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="search">search</span>
+<input id="search-input" class="w-full pl-10 pr-4 py-3 bg-surface border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:outline-none transition-all placeholder:text-on-surface-variant font-body-md" placeholder="Search by crop or disease..." type="text"/>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0" id="filters-container">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+<span class="font-label-md">Filters</span>
+</button>
+<div class="h-6 w-[1px] bg-outline-variant mx-1"></div>
+<span data-crop="all" class="filter-chip cursor-pointer bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-caption font-bold">All Crops</span>
+<span data-crop="corn" class="filter-chip cursor-pointer hover:bg-surface-container-high px-3 py-1 rounded-full text-caption transition-colors">Corn</span>
+<span data-crop="soybeans" class="filter-chip cursor-pointer hover:bg-surface-container-high px-3 py-1 rounded-full text-caption transition-colors">Soybeans</span>
+<span data-crop="wheat" class="filter-chip cursor-pointer hover:bg-surface-container-high px-3 py-1 rounded-full text-caption transition-colors">Wheat</span>
+</div>
+</section>
+<!-- Data Table Container -->
+<section class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider">Date</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider">Crop Type</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider">Disease Name</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider text-center">Connectivity</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider">Status</th>
+<th class="px-6 py-4 font-label-md text-on-surface-variant uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody id="history-table-body" class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-bright transition-colors group" data-crop="corn" data-disease="common rust">
+<td class="px-6 py-4">
+<div class="font-body-md font-bold">Oct 24, 2024</div>
+<div class="text-caption text-on-surface-variant">08:42 AM</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg overflow-hidden bg-surface-container">
+<img alt="Corn" class="w-full h-full object-cover" data-alt="Close-up of healthy corn leaves with vibrant green texture, captured in bright natural morning sunlight. The focus is sharp on the leaf veins, creating a clean, botanical feel consistent with a modern agricultural dashboard. Minimalist composition with a focus on organic geometry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUURQ8NQBV3hni_xddec4lF9B85GY0btxeVo4gLjFgx5sjq6JBlQQfVCXZduZgU1_NP7Hbppj_sNjnWwAvp_JeULIz5O_rF3ifV9ansYefKeJiFnxn3ISOb_uMKgyY8em8Isrv7YIZSfv6GVKo5PEbtmlH3rlzPU78zsaI0JtQ0P5_ofQZN7ULaTG2ryE8nymCMdachA_KDd-EaRsw1gslknCc4LjlV82Ijps--xcTqKJHkq7jWGFB7bByHisLK4DsJjBUcBriqA"/>
+</div>
+<span class="font-body-md">Golden Sweet Corn</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-error font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="warning">warning</span>
+                                            Common Rust
+                                        </span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="material-symbols-outlined text-outline" data-icon="cloud_done" title="Synced to Cloud">cloud_done</span>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed-variant text-caption font-bold">Monitoring</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors active:scale-95" onclick="window.location.href='../analysis_diagnosis/code.html'">
+                                            View Details
+                                        </button>
+</td>
+</tr>
+<!-- Row 2 (Offline) -->
+<tr id="offline-scan-row" class="hover:bg-surface-bright transition-colors group" data-crop="soybeans" data-disease="none detected">
+<td class="px-6 py-4">
+<div class="font-body-md font-bold">Oct 23, 2024</div>
+<div class="text-caption text-on-surface-variant">03:15 PM</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg overflow-hidden bg-surface-container">
+<img alt="Soybean" class="w-full h-full object-cover" data-alt="High-resolution close-up of soybean leaves in a field during the golden hour. The sunlight filters through the leaves, creating a warm, earthy tone. The texture of the plant is detailed and vibrant, suggesting a high-tech diagnostic capability for field management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDcrbQ0cNLm36gPIqC-o_WI9OV0N-0u0mNDjQTtx3CDxIFMI90fJI96HS0d8h5acuKOdsqSGpKq7cQ3MQpNectbd-iaGiJNuxiXnLwpz2-2uHJ2q9ayPnJRUlGppDDSrVPdRScAiM8uHSMTfArAqn1onoO5awnBS3IFfE9Q6X01LMt_CnbjUV2_RlWLUCR4lIjFliGDbvO0M19rX2k_f186Uy7QKiF9f5WBQCK05oD48tf29IzsF_cHcwO9kygKBtDnWCIKbTInw"/>
+</div>
+<span class="font-body-md">Northern Soybeans</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-on-surface-variant font-bold">None Detected</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex flex-col items-center group/tooltip relative">
+<span id="offline-cloud-icon" class="material-symbols-outlined text-tertiary" data-icon="cloud_off" title="Offline Scan">cloud_off</span>
+<span id="offline-sync-badge" class="text-[10px] text-tertiary font-bold">Pending Sync</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant text-caption font-bold">Recovered</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors active:scale-95" onclick="window.location.href='../analysis_diagnosis/code.html'">
+                                            View Details
+                                        </button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-bright transition-colors group" data-crop="wheat" data-disease="leaf blight">
+<td class="px-6 py-4">
+<div class="font-body-md font-bold">Oct 22, 2024</div>
+<div class="text-caption text-on-surface-variant">11:05 AM</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg overflow-hidden bg-surface-container">
+<img alt="Wheat" class="w-full h-full object-cover" data-alt="Detailed macro shot of a single wheat ear against a soft-focus harvest field background. The lighting is warm and golden, emphasizing the agricultural productivity and earthy modern aesthetic. Sharp detail on the grain husks creates a feeling of reliability and professional precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt9Wup--LcZ-LklNvIbRADzQy9lefub9nBEk-jGD9v8k5sPAKFSje1g6bfBKr2V_Dy2keKbgF6VO2-i-Xzjxn4ru1l25IvUEpRx_Md7Wud_lj6Pp4OQ16w4ZVrgTJ3BhNUygoiAscZrwDMjngnc_9FpMSNptLAVcDkcFXG3aaF8S2HdLtelAyWqbgMW3EPl8ysH0hLx16Rw2iJxXkyLFF_GbviLj9X6HtIJIE-5KE1cfK56MYQHjsfDd1aZcKuz6r7NViNNIvn5g"/>
+</div>
+<span class="font-body-md">Winter Wheat</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="text-error font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="warning">warning</span>
+                                            Leaf Blight
+                                        </span>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="material-symbols-outlined text-outline" data-icon="cloud_done">cloud_done</span>
+</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed-variant text-caption font-bold">Monitoring</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors active:scale-95" onclick="window.location.href='../analysis_diagnosis/code.html'">
+                                            View Details
+                                        </button>
+</td>
+</tr>
+<!-- Additional Rows Placeholder -->
+<tr class="hover:bg-surface-bright transition-colors">
+<td class="px-6 py-8 text-center text-on-surface-variant font-label-md italic" colspan="6">
+                                        Showing 3 of 152 total records. Use search to find older entries.
+                                    </td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Footer Summary Grid (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter mt-12">
+<div class="glass-card p-6 rounded-xl border-l-4 border-secondary flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-secondary text-3xl" data-icon="health_and_safety">health_and_safety</span>
+<span class="text-secondary font-bold text-headline-lg">84%</span>
+</div>
+<div class="mt-4">
+<h3 class="font-title-md text-title-md text-primary">Healthy Recoveries</h3>
+<p class="text-caption text-on-surface-variant">Crops successfully treated this month.</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl border-l-4 border-tertiary flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary text-3xl" data-icon="signal_disconnected">signal_disconnected</span>
+<span id="bento-pending-count" class="text-tertiary font-bold text-headline-lg">3</span>
+</div>
+<div class="mt-4">
+<h3 class="font-title-md text-title-md text-primary">Pending Sync</h3>
+<p class="text-caption text-on-surface-variant">Scans performed in remote fields offline.</p>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl border-l-4 border-error flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-error text-3xl" data-icon="priority_high">priority_high</span>
+<span class="text-error font-bold text-headline-lg">12</span>
+</div>
+<div class="mt-4">
+<h3 class="font-title-md text-title-md text-primary">Active Alerts</h3>
+<p class="text-caption text-on-surface-variant">Entries currently in monitoring status.</p>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Component -->
+<footer class="mt-auto bg-surface-container-highest border-t border-outline-variant flex flex-col md:flex-row justify-between items-center px-container-margin-desktop py-unit gap-gutter w-full">
+<div class="font-caption text-caption text-on-surface-variant">
+                    © 2024 AgriScan Management Systems. v2.4.1-stable
+                </div>
+<div class="flex gap-gutter">
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary underline transition-colors" href="#">Privacy Policy</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary underline transition-colors" href="#">Terms of Service</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary underline transition-colors" href="#">Field Guides</a>
+<a class="font-caption text-caption text-on-surface-variant hover:text-primary underline transition-colors" href="#">Contact Expert</a>
+</div>
+</footer>
+</main>
+</div>
+<!-- Micro-interaction Script -->
+<script>
+        // Simple scale effect for list items
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mousedown', () => {
+                row.classList.add('scale-[0.99]', 'transition-transform');
+            });
+            row.addEventListener('mouseup', () => {
+                row.classList.remove('scale-[0.99]');
+            });
+            row.addEventListener('mouseleave', () => {
+                row.classList.remove('scale-[0.99]');
+            });
+        });
+
+        // Search & Filter Logic
+        const searchInput = document.getElementById('search-input');
+        const filterChips = document.querySelectorAll('.filter-chip');
+        const tableRows = document.querySelectorAll('tbody tr[data-crop]'); // select only rows that have crop data
+        
+        let currentFilter = 'all';
+        let searchQuery = '';
+
+        function updateFilters() {
+            tableRows.forEach(row => {
+                const crop = row.getAttribute('data-crop');
+                const disease = row.getAttribute('data-disease');
+                const cropText = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const diseaseText = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                const matchesFilter = (currentFilter === 'all' || crop === currentFilter);
+                const matchesSearch = cropText.includes(searchQuery) || diseaseText.includes(searchQuery);
+                
+                if (matchesFilter && matchesSearch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                updateFilters();
+            });
+        }
+
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                // Remove active classes from all chips
+                filterChips.forEach(c => {
+                    c.classList.remove('bg-secondary-container', 'text-on-secondary-container', 'font-bold');
+                    c.classList.add('hover:bg-surface-container-high', 'transition-colors');
+                });
+                
+                // Add active classes to clicked chip
+                chip.classList.add('bg-secondary-container', 'text-on-secondary-container', 'font-bold');
+                chip.classList.remove('hover:bg-surface-container-high', 'transition-colors');
+                
+                currentFilter = chip.getAttribute('data-crop');
+                updateFilters();
+            });
+        });
+
+        // Sync button loading state simulation
+        const syncBtn = document.getElementById('sync-button');
+        const bentoPendingCount = document.getElementById('bento-pending-count');
+        
+        function setSyncedStateHistory() {
+            if (syncBtn) {
+                syncBtn.innerHTML = `<span class="material-symbols-outlined text-[20px]">check_circle</span> All scans synced`;
+                syncBtn.classList.replace('bg-secondary', 'bg-on-secondary-container');
+                syncBtn.classList.add('text-white');
+                syncBtn.disabled = true;
+            }
+            if (bentoPendingCount) bentoPendingCount.textContent = '0';
+            
+            const cloudIcon = document.getElementById('offline-cloud-icon');
+            const syncBadge = document.getElementById('offline-sync-badge');
+            
+            if (cloudIcon) {
+                cloudIcon.textContent = 'cloud_done';
+                cloudIcon.title = 'Synced to Cloud';
+                cloudIcon.classList.remove('text-tertiary');
+                cloudIcon.classList.add('text-outline');
+            }
+            if (syncBadge) {
+                syncBadge.style.display = 'none';
+            }
+        }
+
+        // Load dynamically recorded scans from localStorage
+        try {
+            const recordedScans = JSON.parse(localStorage.getItem('agriscan_scan_history') || '[]');
+            const tbody = document.getElementById('history-table-body');
+            if (tbody && recordedScans.length > 0) {
+                recordedScans.forEach((scan, index) => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-surface-bright transition-colors group bg-primary-fixed/10';
+                    row.setAttribute('data-crop', (scan.crop || '').toLowerCase());
+                    row.setAttribute('data-disease', (scan.disease || '').toLowerCase());
+
+                    const isAlert = scan.isIssue !== false;
+                    const alertBadge = isAlert
+                        ? `<span class="text-error font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">warning</span> ${scan.disease}</span>`
+                        : `<span class="text-secondary font-bold flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">verified</span> ${scan.disease}</span>`;
+                    
+                    const statusBadge = isAlert
+                        ? `<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container text-caption font-bold">Action Needed</span>`
+                        : `<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-fixed-variant text-caption font-bold">All Clear</span>`;
+
+                    row.innerHTML = `
+                        <td class="px-6 py-4">
+                            <div class="font-body-md font-bold text-primary">${scan.date} <span class="text-[10px] bg-secondary-container text-on-secondary-container px-1.5 py-0.5 rounded font-bold ml-1">NEW</span></div>
+                            <div class="text-caption text-on-surface-variant">${scan.time}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg overflow-hidden bg-surface-container shrink-0 border border-outline-variant">
+                                    <img alt="${scan.crop}" class="w-full h-full object-cover" src="${scan.image || ''}"/>
+                                </div>
+                                <span class="font-body-md font-semibold">${scan.crop}</span>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">${alertBadge}</td>
+                        <td class="px-6 py-4 text-center">
+                            <span class="material-symbols-outlined text-secondary" title="Edge AI Verified">offline_pin</span>
+                        </td>
+                        <td class="px-6 py-4">${statusBadge}</td>
+                        <td class="px-6 py-4 text-right">
+                            <button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-label-md hover:bg-primary-container transition-colors active:scale-95 cursor-pointer view-rec-btn">
+                                View Details
+                            </button>
+                        </td>
+                    `;
+
+                    row.querySelector('.view-rec-btn').onclick = () => {
+                        sessionStorage.setItem('uploaded_leaf_diagnosis', scan.disease);
+                        sessionStorage.setItem('uploaded_leaf_image', scan.image);
+                        if (scan.data) {
+                            sessionStorage.setItem('uploaded_leaf_data', JSON.stringify(scan.data));
+                        }
+                        window.location.href = '../analysis_diagnosis/code.html';
+                    };
+
+                    tbody.insertBefore(row, tbody.firstChild);
+                });
+            }
+        } catch(e) {
+            console.error(e);
+        }
+
+        // Smooth navigation transitions
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                const href = link.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('javascript') || href.startsWith('mailto') || href.startsWith('tel')) return;
+                if (link.target === '_blank') return;
+                e.preventDefault();
+                document.body.classList.add('page-exit');
+                setTimeout(() => { window.location.href = href; }, 200);
+            });
+        });
+    </script>
+<!-- Mobile Bottom Nav Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-outline-variant flex justify-around items-center py-2 px-2">
+  <a href="../agriscan_dashboard/code.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">grid_view</span>
+    <span class="text-[10px] font-medium">Dashboard</span>
+  </a>
+  <a href="../scan_portal/code.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">camera</span>
+    <span class="text-[10px] font-medium">Scan</span>
+  </a>
+  <a href="../history_log/code.html" class="flex flex-col items-center gap-0.5 text-primary px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">history</span>
+    <span class="text-[10px] font-bold">History</span>
+  </a>
+  <a href="../treatment_guides/code.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">healing</span>
+    <span class="text-[10px] font-medium">Treatment</span>
+  </a>
+  <a href="../index.html" class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-primary transition-colors px-3 py-1">
+    <span class="material-symbols-outlined text-[22px]">apps</span>
+    <span class="text-[10px] font-medium">Hub</span>
+  </a>
+</nav>
+</body></html>
