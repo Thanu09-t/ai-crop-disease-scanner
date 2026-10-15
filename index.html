@@ -84,10 +84,16 @@
         .material-symbols-fill {
             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+        .hero-gradient {
+            background: linear-gradient(135deg, #012d1d 0%, #116c4a 100%);
+        }
         .glass-card {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(225, 227, 228, 0.8);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 20px rgba(1, 45, 29, 0.06);
         }
         .scanning-line {
             height: 3px;
@@ -185,6 +191,11 @@
             from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .confetti {
+            position: absolute;
+            opacity: 0.8;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-surface text-on-surface antialiased overflow-x-hidden min-h-screen flex flex-col md:flex-row md:h-screen md:overflow-hidden">
@@ -195,8 +206,8 @@
     <!-- ==================== DESKTOP SIDEBAR ==================== -->
     <aside class="hidden md:flex flex-col h-full py-4 overflow-y-auto bg-surface-container-low border-r border-outline-variant w-64 lg:w-72 shrink-0 select-none z-30">
         <!-- Logo Header -->
-        <div class="px-5 mb-6 flex items-center justify-between">
-            <div class="flex items-center gap-3 cursor-pointer" onclick="switchNavTab('dashboard')">
+        <div class="px-5 mb-5 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchNavTab('launchpad')">
                 <div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center shadow-sm">
                     <span class="material-symbols-outlined text-secondary-fixed text-2xl material-symbols-fill">eco</span>
                 </div>
@@ -214,46 +225,53 @@
         </div>
 
         <!-- Navigation Links -->
-        <nav class="flex-1 px-3 space-y-1.5">
-            <button onclick="switchNavTab('dashboard')" id="nav-btn-dashboard" class="w-full text-left font-bold rounded-xl px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98] bg-primary-container text-on-primary-container shadow-sm">
-                <span class="material-symbols-outlined text-[22px]">grid_view</span>
+        <nav class="flex-1 px-3 space-y-1">
+            <button onclick="switchNavTab('launchpad')" id="nav-btn-launchpad" class="w-full text-left font-bold rounded-xl px-4 py-2.5 flex items-center gap-3 transition-all active:scale-[0.98] bg-primary-container text-on-primary-container shadow-sm">
+                <span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+                <span class="text-sm font-semibold" data-en="Portal Launchpad" data-kn="ಪೋರ್ಟಲ್ ಲಾಂಚ್‌ಪ್ಯಾಡ್">Portal Launchpad</span>
+            </button>
+
+            <button onclick="switchNavTab('dashboard')" id="nav-btn-dashboard" class="w-full text-left font-bold rounded-xl px-4 py-2.5 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
+                <span class="material-symbols-outlined text-[20px]">grid_view</span>
                 <span class="text-sm font-semibold" data-en="Dashboard" data-kn="ಡ್ಯಾಶ್‌ಬೋರ್ಡ್">Dashboard</span>
             </button>
 
-            <button onclick="switchNavTab('scan')" id="nav-btn-scan" class="w-full text-left font-bold rounded-xl px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
-                <span class="material-symbols-outlined text-[22px]">photo_camera</span>
+            <button onclick="switchNavTab('scan')" id="nav-btn-scan" class="w-full text-left font-bold rounded-xl px-4 py-2.5 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
+                <span class="material-symbols-outlined text-[20px]">photo_camera</span>
                 <span class="text-sm font-semibold" data-en="Scan Portal" data-kn="ಸ್ಕ್ಯಾನ್ ಪೋರ್ಟಲ್">Scan Portal</span>
             </button>
 
-            <button onclick="switchNavTab('diagnosis')" id="nav-btn-diagnosis" class="w-full text-left font-bold rounded-xl px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
-                <span class="material-symbols-outlined text-[22px]">psychology</span>
+            <button onclick="switchNavTab('diagnosis')" id="nav-btn-diagnosis" class="w-full text-left font-bold rounded-xl px-4 py-2.5 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
+                <span class="material-symbols-outlined text-[20px]">psychology</span>
                 <span class="text-sm font-semibold" data-en="Diagnosis & Analysis" data-kn="ರೋಗ ನಿರ್ಣಯ & ವಿಶ್ಲೇಷಣೆ">Diagnosis & Analysis</span>
             </button>
 
-            <button onclick="switchNavTab('treatment')" id="nav-btn-treatment" class="w-full text-left font-bold rounded-xl px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
-                <span class="material-symbols-outlined text-[22px]">healing</span>
+            <button onclick="switchNavTab('treatment')" id="nav-btn-treatment" class="w-full text-left font-bold rounded-xl px-4 py-2.5 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
+                <span class="material-symbols-outlined text-[20px]">healing</span>
                 <span class="text-sm font-semibold" data-en="Treatment Guides" data-kn="ಚಿಕಿತ್ಸಾ ಮಾರ್ಗದರ್ಶಿಗಳು">Treatment Guides</span>
             </button>
 
-            <button onclick="switchNavTab('history')" id="nav-btn-history" class="w-full text-left font-bold rounded-xl px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
-                <span class="material-symbols-outlined text-[22px]">history</span>
+            <button onclick="switchNavTab('history')" id="nav-btn-history" class="w-full text-left font-bold rounded-xl px-4 py-2.5 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
+                <span class="material-symbols-outlined text-[20px]">history</span>
                 <span class="text-sm font-semibold" data-en="History Log" data-kn="ಇತಿಹಾಸ ದಾಖಲೆ">History Log</span>
             </button>
 
-            <button onclick="switchNavTab('launchpad')" id="nav-btn-launchpad" class="w-full text-left font-bold rounded-xl px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
-                <span class="material-symbols-outlined text-[22px]">apps</span>
-                <span class="text-sm font-semibold" data-en="Portal Directory" data-kn="ಪೋರ್ಟಲ್ ಡೈರೆಕ್ಟರಿ">Portal Directory</span>
-            </button>
+            <div class="pt-2 border-t border-outline-variant/30 mt-2">
+                <button onclick="openOnboardingModal('login')" class="w-full text-left font-bold rounded-xl px-4 py-2.5 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container">
+                    <span class="material-symbols-outlined text-[20px]">login</span>
+                    <span class="text-sm font-semibold">Farmer Onboarding</span>
+                </button>
+            </div>
         </nav>
 
         <!-- Sidebar Bottom Quick Scan Action -->
-        <div class="px-4 mt-auto pt-4 border-t border-outline-variant/50 space-y-2">
+        <div class="px-4 mt-auto pt-3 border-t border-outline-variant/50 space-y-2">
             <button onclick="switchNavTab('scan'); openCameraSimulator();" class="w-full bg-primary hover:bg-[#002114] text-white py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer">
                 <span class="material-symbols-outlined text-[18px]">add_circle</span>
                 <span data-en="New Camera Scan" data-kn="ಹೊಸ ಕ್ಯಾಮೆರಾ ಸ್ಕ್ಯಾನ್">New Camera Scan</span>
             </button>
 
-            <div class="p-3 bg-surface-container rounded-xl flex items-center justify-between text-xs">
+            <div class="p-2.5 bg-surface-container rounded-xl flex items-center justify-between text-xs">
                 <div class="flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-secondary"></span>
                     <span class="text-on-surface-variant font-medium">KrishiAI Engine</span>
@@ -270,17 +288,29 @@
         <header class="flex justify-between items-center w-full px-4 md:px-10 h-16 bg-surface/90 backdrop-blur-md shadow-sm sticky top-0 z-20 border-b border-outline-variant/40">
             <div class="flex items-center gap-3">
                 <!-- Mobile brand icon -->
-                <div class="md:hidden w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white" onclick="switchNavTab('dashboard')">
+                <div class="md:hidden w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white cursor-pointer" onclick="switchNavTab('launchpad')">
                     <span class="material-symbols-outlined text-base">eco</span>
                 </div>
                 <div>
-                    <h2 class="font-bold text-base md:text-xl text-primary" id="page-title-heading">AgriScan Pro Dashboard</h2>
-                    <p class="text-[11px] text-on-surface-variant hidden sm:block" id="page-subtitle-text">Precision diagnostics, field telemetry and harvest management</p>
+                    <h2 class="font-bold text-base md:text-xl text-primary" id="page-title-heading">AgriScan Pro Launchpad Hub</h2>
+                    <p class="text-[11px] text-on-surface-variant hidden sm:block" id="page-subtitle-text">Precision diagnostics, field telemetry and prototype screens</p>
                 </div>
             </div>
 
             <!-- Top Header Actions -->
             <div class="flex items-center gap-2 sm:gap-4 relative">
+                <!-- Quick Portal Buttons (Desktop) -->
+                <nav class="hidden xl:flex items-center gap-1 text-xs font-bold text-[#414844]">
+                    <button onclick="openOnboardingModal('login')" class="px-2.5 py-1 rounded-lg hover:bg-secondary-container hover:text-primary transition-colors">1. Login</button>
+                    <button onclick="openOnboardingModal('otp')" class="px-2.5 py-1 rounded-lg hover:bg-secondary-container hover:text-primary transition-colors">2. Verify</button>
+                    <button onclick="openOnboardingModal('farm')" class="px-2.5 py-1 rounded-lg hover:bg-secondary-container hover:text-primary transition-colors">3. Farm</button>
+                    <button onclick="switchNavTab('dashboard')" class="px-2.5 py-1 rounded-lg hover:bg-secondary-container hover:text-primary transition-colors">4. Dashboard</button>
+                    <button onclick="switchNavTab('scan')" class="px-2.5 py-1 rounded-lg hover:bg-secondary-container hover:text-primary transition-colors">5. Scan</button>
+                    <button onclick="switchNavTab('diagnosis')" class="px-2.5 py-1 rounded-lg hover:bg-secondary-container hover:text-primary transition-colors">6. Diagnosis</button>
+                    <button onclick="switchNavTab('treatment')" class="px-2.5 py-1 rounded-lg hover:bg-secondary-container hover:text-primary transition-colors">7. Treatment</button>
+                    <button onclick="switchNavTab('history')" class="px-2.5 py-1 rounded-lg hover:bg-secondary-container hover:text-primary transition-colors">8. History</button>
+                </nav>
+
                 <!-- Language Toggle Button -->
                 <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg border border-outline-variant hover:bg-surface-container-high transition-colors flex items-center gap-1.5 text-xs font-bold text-primary">
                     <span class="material-symbols-outlined text-[18px]">language</span>
@@ -322,17 +352,192 @@
                 </div>
 
                 <!-- User profile chip -->
-                <div class="flex items-center gap-2 pl-2 border-l border-outline-variant/40">
+                <div class="flex items-center gap-2 pl-2 border-l border-outline-variant/40 cursor-pointer" onclick="openOnboardingModal('login')">
                     <div class="w-8 h-8 rounded-full border border-secondary overflow-hidden bg-primary text-white flex items-center justify-center font-bold text-xs">
                         RP
                     </div>
-                    <span class="hidden lg:block text-xs font-bold text-primary">Rajappa (Field Agronomist)</span>
+                    <span class="hidden lg:block text-xs font-bold text-primary">Rajappa</span>
                 </div>
             </div>
         </header>
 
+        <!-- ==================== VIEW 0: PORTAL LAUNCHPAD (THE ORIGINAL HUB SCREEN) ==================== -->
+        <section id="tab-launchpad" class="tab-content active p-4 md:p-8 max-w-[1340px] mx-auto w-full pb-24 md:pb-8 space-y-8">
+            
+            <!-- Original Hero Section -->
+            <div class="hero-gradient text-white rounded-3xl p-8 md:p-12 flex flex-col md:flex-row justify-between items-center gap-8 relative overflow-hidden card-shadow">
+                <div class="absolute inset-0 opacity-[0.05] pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+                <div class="flex-1 space-y-5 z-10">
+                    <span class="bg-[#a1f4c8] text-[#012d1d] px-3.5 py-1 rounded-full text-xs font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5 shadow-sm">
+                        <span class="w-2 h-2 bg-[#116c4a] rounded-full animate-pulse"></span> Full Application Active & Synchronized
+                    </span>
+                    <h1 class="text-3xl md:text-5xl font-extrabold leading-tight tracking-tight">
+                        AgriScan Pro <br><span class="text-[#a1f4c8]">Precision Field Diagnostics</span>
+                    </h1>
+                    <p class="text-white/85 text-base md:text-lg max-w-xl font-light leading-relaxed">
+                        A high-fidelity interactive precision agriculture platform connecting farmers, smart offline crop diagnostic scanning, automated treatment guidelines, and field telemetry.
+                    </p>
+                    <div class="flex flex-wrap gap-3.5 pt-2">
+                        <button onclick="openOnboardingModal('login')" class="inline-flex items-center gap-2 bg-[#a1f4c8] text-[#012d1d] font-bold px-6 py-3 rounded-xl hover:bg-white hover:text-[#116c4a] transition-all active:scale-95 duration-200 shadow-lg text-sm">
+                            <span>Start from Onboarding</span> <span class="material-symbols-outlined font-bold text-[18px]">login</span>
+                        </button>
+                        <button onclick="switchNavTab('dashboard')" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold px-6 py-3 rounded-xl border border-white/20 transition-all active:scale-95 duration-200 text-sm">
+                            <span>Jump to Dashboard</span> <span class="material-symbols-outlined font-bold text-[18px]">dashboard</span>
+                        </button>
+                        <button onclick="switchNavTab('scan')" class="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold px-6 py-3 rounded-xl border border-white/20 transition-all active:scale-95 duration-200 text-sm">
+                            <span>Launch Scanner</span> <span class="material-symbols-outlined font-bold text-[18px]">photo_camera</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="w-full md:w-[360px] aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl z-10 border-4 border-white/10 shrink-0">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUURQ8NQBV3hni_xddec4lF9B85GY0btxeVo4gLjFgx5sjq6JBlQQfVCXZduZgU1_NP7Hbppj_sNjnWwAvp_JeULIz5O_rF3ifV9ansYefKeJiFnxn3ISOb_uMKgyY8em8Isrv7YIZSfv6GVKo5PEbtmlH3rlzPU78zsaI0JtQ0P5_ofQZN7ULaTG2ryE8nymCMdachA_KDd-EaRsw1gslknCc4LjlV82Ijps--xcTqKJHkq7jWGFB7bByHisLK4DsJjBUcBriqA" alt="Farm Fields" class="w-full h-full object-cover" />
+                </div>
+            </div>
+
+            <!-- Screens Directory Section (The 9 Cards from http://127.0.0.1:8080/) -->
+            <div class="space-y-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-[#012d1d] tracking-tight">Interactive Prototype Modules</h2>
+                        <p class="text-xs text-on-surface-variant">Click any module to trigger the live component</p>
+                    </div>
+                    <span class="text-xs bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-bold">9 Modules Integrated</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Screen Card 1: Secure Access -->
+                    <div onclick="openOnboardingModal('login')" class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group cursor-pointer">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">login</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#012d1d] mb-2">1. Secure Access</h3>
+                            <p class="text-sm text-[#414844] mb-6">Agronomist & Farmer entry point featuring bi-lingual English/Kannada selection and phone login interface.</p>
+                        </div>
+                        <div class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                            Open Screen <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </div>
+
+                    <!-- Screen Card 2: OTP Verification -->
+                    <div onclick="openOnboardingModal('otp')" class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group cursor-pointer">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">verified</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#012d1d] mb-2">2. OTP Verification</h3>
+                            <p class="text-sm text-[#414844] mb-6">6-digit interactive SMS/phone registration page with countdown timer and autofill demo trigger.</p>
+                        </div>
+                        <div class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                            Open Screen <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </div>
+
+                    <!-- Screen Card 3: Farm Setup -->
+                    <div onclick="openOnboardingModal('farm')" class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group cursor-pointer">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">agriculture</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#012d1d] mb-2">3. Farm Setup</h3>
+                            <p class="text-sm text-[#414844] mb-6">Crop selections, satellite address search, manual coordinates and custom mapping setup.</p>
+                        </div>
+                        <div class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                            Open Screen <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </div>
+
+                    <!-- Screen Card 4: Success Complete -->
+                    <div onclick="openOnboardingModal('success')" class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group cursor-pointer">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">check_circle</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#012d1d] mb-2">4. Success Complete</h3>
+                            <p class="text-sm text-[#414844] mb-6">Confetti-burst confirmation page with beautiful rustic crop harvest graphics and direct app launch.</p>
+                        </div>
+                        <div class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                            Open Screen <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </div>
+
+                    <!-- Screen Card 5: Main Dashboard -->
+                    <div onclick="switchNavTab('dashboard')" class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group cursor-pointer">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">grid_view</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#012d1d] mb-2">5. Main Dashboard</h3>
+                            <p class="text-sm text-[#414844] mb-6">Interactive agricultural analytics hub featuring bento metrics, spore risk forecasts and live weather updates.</p>
+                        </div>
+                        <div class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                            Open Screen <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </div>
+
+                    <!-- Screen Card 6: Scanner Viewfinder -->
+                    <div onclick="switchNavTab('scan')" class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group cursor-pointer">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">photo_camera</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#012d1d] mb-2">6. Scanner Viewfinder</h3>
+                            <p class="text-sm text-[#414844] mb-6">Real-time scan uploader with dragging file state, camera guides and animated scanning lasers.</p>
+                        </div>
+                        <div class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                            Open Screen <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </div>
+
+                    <!-- Screen Card 7: Diagnosis & Metrics -->
+                    <div onclick="switchNavTab('diagnosis')" class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group cursor-pointer">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">psychology</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#012d1d] mb-2">7. Diagnosis & Metrics</h3>
+                            <p class="text-sm text-[#414844] mb-6">Detailed AI Late Blight diagnosis overlay showing lesion detection zones and match scores.</p>
+                        </div>
+                        <div class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                            Open Screen <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </div>
+
+                    <!-- Screen Card 8: Recovery Guides -->
+                    <div onclick="switchNavTab('treatment')" class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group cursor-pointer">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">healing</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#012d1d] mb-2">8. Recovery Guides</h3>
+                            <p class="text-sm text-[#414844] mb-6">Comprehensive step-by-step chemical and organic treatments bento with dosage calculator.</p>
+                        </div>
+                        <div class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                            Open Screen <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </div>
+
+                    <!-- Screen Card 9: History Log -->
+                    <div onclick="switchNavTab('history')" class="bg-white border border-[#c1c8c2] rounded-2xl p-6 flex flex-col justify-between hover:border-[#116c4a] hover:-translate-y-1 transition-all duration-300 card-shadow group cursor-pointer">
+                        <div>
+                            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-[#116c4a] mb-4 group-hover:scale-110 transition-transform">
+                                <span class="material-symbols-outlined">history</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-[#012d1d] mb-2">9. History Log</h3>
+                            <p class="text-sm text-[#414844] mb-6">Interactive disease scanning history filterable by crop type and searchable by field ID.</p>
+                        </div>
+                        <div class="inline-flex items-center gap-1 text-[#116c4a] font-bold text-sm hover:underline mt-auto">
+                            Open Screen <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
         <!-- ==================== VIEW 1: DASHBOARD ==================== -->
-        <section id="tab-dashboard" class="tab-content active p-4 md:p-8 max-w-[1340px] mx-auto w-full pb-24 md:pb-8 space-y-6">
+        <section id="tab-dashboard" class="tab-content p-4 md:p-8 max-w-[1340px] mx-auto w-full pb-24 md:pb-8 space-y-6">
             
             <!-- Hero Welcome Banner -->
             <div class="relative bg-gradient-to-br from-primary via-primary-container to-secondary text-white p-6 md:p-8 rounded-3xl shadow-md overflow-hidden">
@@ -1084,84 +1289,144 @@
             </div>
         </section>
 
-        <!-- ==================== VIEW 6: PORTAL LAUNCHPAD (HUB) ==================== -->
-        <section id="tab-launchpad" class="tab-content p-4 md:p-8 max-w-[1340px] mx-auto w-full pb-24 md:pb-8 space-y-6">
-            
-            <div class="bg-gradient-to-r from-primary to-[#116c4a] text-white p-8 rounded-3xl shadow-md space-y-3">
-                <span class="bg-[#a1f4c8] text-[#012d1d] text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider inline-block">
-                    Unified Precision Agriculture Hub
-                </span>
-                <h3 class="text-3xl font-extrabold">AgriScan Pro Ecosystem</h3>
-                <p class="text-white/85 text-sm max-w-2xl leading-relaxed">
-                    All standalone screens and prototypes have been harmonized into this unified single-site application. Select any module below to jump directly into the active workflow.
-                </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                
-                <!-- Hub Card 1 -->
-                <div onclick="switchNavTab('dashboard')" class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant hover:border-secondary hover:shadow-lg transition-all cursor-pointer group">
-                    <div class="w-12 h-12 rounded-2xl bg-primary-fixed text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-2xl">grid_view</span>
-                    </div>
-                    <h4 class="font-bold text-primary text-base mb-1">1. Main Analytics Dashboard</h4>
-                    <p class="text-xs text-on-surface-variant mb-4">Farm Health Index, scanning velocity charts, microclimate spore telemetry and quick telemetry.</p>
-                    <span class="text-xs font-bold text-secondary flex items-center gap-1 group-hover:translate-x-1 transition-transform">Open Dashboard →</span>
-                </div>
-
-                <!-- Hub Card 2 -->
-                <div onclick="switchNavTab('scan')" class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant hover:border-secondary hover:shadow-lg transition-all cursor-pointer group">
-                    <div class="w-12 h-12 rounded-2xl bg-secondary-fixed text-secondary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-2xl">photo_camera</span>
-                    </div>
-                    <h4 class="font-bold text-primary text-base mb-1">2. Crop Scan Portal</h4>
-                    <p class="text-xs text-on-surface-variant mb-4">Drag-and-drop leaf upload, instant sample tests, and simulated live camera viewfinder capture.</p>
-                    <span class="text-xs font-bold text-secondary flex items-center gap-1 group-hover:translate-x-1 transition-transform">Launch Scanner →</span>
-                </div>
-
-                <!-- Hub Card 3 -->
-                <div onclick="switchNavTab('diagnosis')" class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant hover:border-secondary hover:shadow-lg transition-all cursor-pointer group">
-                    <div class="w-12 h-12 rounded-2xl bg-tertiary-fixed text-tertiary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-2xl">psychology</span>
-                    </div>
-                    <h4 class="font-bold text-primary text-base mb-1">3. Diagnosis & Neural Analysis</h4>
-                    <p class="text-xs text-on-surface-variant mb-4">Animated lesion bounding overlays, confidence gauges, spread risk, and differential pathology.</p>
-                    <span class="text-xs font-bold text-secondary flex items-center gap-1 group-hover:translate-x-1 transition-transform">View Diagnosis →</span>
-                </div>
-
-                <!-- Hub Card 4 -->
-                <div onclick="switchNavTab('treatment')" class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant hover:border-secondary hover:shadow-lg transition-all cursor-pointer group">
-                    <div class="w-12 h-12 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-2xl">healing</span>
-                    </div>
-                    <h4 class="font-bold text-primary text-base mb-1">4. Treatment & Recovery Plans</h4>
-                    <p class="text-xs text-on-surface-variant mb-4">Organic solutions, chemical fungicides, dosage calculators, and crop rotation schedules.</p>
-                    <span class="text-xs font-bold text-secondary flex items-center gap-1 group-hover:translate-x-1 transition-transform">Open Treatment →</span>
-                </div>
-
-                <!-- Hub Card 5 -->
-                <div onclick="switchNavTab('history')" class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant hover:border-secondary hover:shadow-lg transition-all cursor-pointer group">
-                    <div class="w-12 h-12 rounded-2xl bg-primary-fixed-dim text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-2xl">history</span>
-                    </div>
-                    <h4 class="font-bold text-primary text-base mb-1">5. Historical Scans Ledger</h4>
-                    <p class="text-xs text-on-surface-variant mb-4">Complete audit trail of past scans, search filters, and one-click recall of past leaf diagnostics.</p>
-                    <span class="text-xs font-bold text-secondary flex items-center gap-1 group-hover:translate-x-1 transition-transform">Open History →</span>
-                </div>
-
-                <!-- Hub Card 6 -->
-                <div onclick="window.open('http://127.0.0.1:5000', '_blank')" class="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant hover:border-secondary hover:shadow-lg transition-all cursor-pointer group">
-                    <div class="w-12 h-12 rounded-2xl bg-surface-container-high text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-outlined text-2xl">developer_board</span>
-                    </div>
-                    <h4 class="font-bold text-primary text-base mb-1">6. Backend KrishiAI Server</h4>
-                    <p class="text-xs text-on-surface-variant mb-4">Python Flask REST API with SQLite database running concurrently on port 5000.</p>
-                    <span class="text-xs font-bold text-secondary flex items-center gap-1 group-hover:translate-x-1 transition-transform">Inspect Server (5000) →</span>
-                </div>
-            </div>
-        </section>
-
     </main>
+
+    <!-- ==================== ONBOARDING FLOW MODALS ==================== -->
+    <!-- 1. Login Modal -->
+    <div id="modal-login" class="hidden fixed inset-0 z-50 bg-[#012d1d]/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl border border-outline-variant/60 shadow-2xl w-full max-w-md p-6 md:p-8 relative">
+            <button onclick="closeOnboardingModal('login')" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-primary-container text-secondary-fixed rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-sm">
+                    <span class="material-symbols-outlined text-2xl">eco</span>
+                </div>
+                <h3 class="text-xl font-extrabold text-primary">AgriScan Pro Login</h3>
+                <p class="text-xs text-on-surface-variant mt-1">Bi-lingual Farmer & Agronomist Access</p>
+            </div>
+            <form onsubmit="event.preventDefault(); openOnboardingModal('otp');" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-primary mb-1">Mobile Phone Number</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-2.5 text-xs font-bold text-on-surface-variant">+91</span>
+                        <input type="tel" value="9845012345" class="w-full pl-12 pr-4 py-2.5 bg-surface-container border border-outline-variant rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-secondary">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-primary mb-1">Security PIN / Password</label>
+                    <input type="password" value="••••••" class="w-full px-4 py-2.5 bg-surface-container border border-outline-variant rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-secondary">
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-[#002114] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95">
+                    Send Verification Code (OTP) →
+                </button>
+            </form>
+            <div class="mt-4 pt-4 border-t border-outline-variant/40 flex justify-between text-[11px]">
+                <button onclick="openOnboardingModal('otp')" class="text-secondary font-bold hover:underline">Verify with SMS OTP</button>
+                <button onclick="openOnboardingModal('farm')" class="text-on-surface-variant hover:underline">New Farm Profile?</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. OTP Verification Modal -->
+    <div id="modal-otp" class="hidden fixed inset-0 z-50 bg-[#012d1d]/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl border border-outline-variant/60 shadow-2xl w-full max-w-md p-6 md:p-8 relative text-center">
+            <button onclick="closeOnboardingModal('otp')" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="w-12 h-12 bg-primary-container text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-sm">
+                <span class="material-symbols-outlined text-2xl">cell_tower</span>
+            </div>
+            <h3 class="text-xl font-extrabold text-primary">Verify 6-Digit Code</h3>
+            <p class="text-xs text-on-surface-variant mt-1">Sent to <span class="font-bold text-primary">+91 98450 •••••</span></p>
+
+            <button type="button" onclick="autofillDemoOtp()" class="my-4 text-xs bg-secondary-container text-on-secondary-container px-3.5 py-1 rounded-full font-bold hover:opacity-90 active:scale-95 transition-all inline-flex items-center gap-1.5 shadow-sm">
+                <span class="material-symbols-outlined text-[14px]">bolt</span> Autofill Demo OTP (847291)
+            </button>
+
+            <form onsubmit="event.preventDefault(); openOnboardingModal('farm');" class="space-y-4">
+                <div class="flex justify-center gap-2" id="otp-inputs-wrapper">
+                    <input maxlength="1" class="w-11 h-12 text-center text-xl font-bold bg-surface-container rounded-xl border border-outline-variant focus:ring-2 focus:ring-secondary focus:outline-none" value="8">
+                    <input maxlength="1" class="w-11 h-12 text-center text-xl font-bold bg-surface-container rounded-xl border border-outline-variant focus:ring-2 focus:ring-secondary focus:outline-none" value="4">
+                    <input maxlength="1" class="w-11 h-12 text-center text-xl font-bold bg-surface-container rounded-xl border border-outline-variant focus:ring-2 focus:ring-secondary focus:outline-none" value="7">
+                    <input maxlength="1" class="w-11 h-12 text-center text-xl font-bold bg-surface-container rounded-xl border border-outline-variant focus:ring-2 focus:ring-secondary focus:outline-none" value="2">
+                    <input maxlength="1" class="w-11 h-12 text-center text-xl font-bold bg-surface-container rounded-xl border border-outline-variant focus:ring-2 focus:ring-secondary focus:outline-none" value="9">
+                    <input maxlength="1" class="w-11 h-12 text-center text-xl font-bold bg-surface-container rounded-xl border border-outline-variant focus:ring-2 focus:ring-secondary focus:outline-none" value="1">
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-[#002114] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95">
+                    Confirm & Proceed to Farm Setup →
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. Farm Setup Modal -->
+    <div id="modal-farm" class="hidden fixed inset-0 z-50 bg-[#012d1d]/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl border border-outline-variant/60 shadow-2xl w-full max-w-lg p-6 md:p-8 relative">
+            <button onclick="closeOnboardingModal('farm')" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-secondary-container text-on-secondary-container rounded-xl flex items-center justify-center font-bold">
+                    <span class="material-symbols-outlined">agriculture</span>
+                </div>
+                <div>
+                    <h3 class="text-lg font-extrabold text-primary">Farm & Parcel Profile</h3>
+                    <p class="text-xs text-on-surface-variant">Step 3 of 3 • Telemetry configuration</p>
+                </div>
+            </div>
+            <form onsubmit="event.preventDefault(); openOnboardingModal('success');" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-bold text-primary mb-1">Farmer / Operator Name</label>
+                    <input type="text" value="Rajappa Patil" class="w-full px-3.5 py-2 bg-surface-container border border-outline-variant rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-secondary">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-primary mb-1">Primary Crop</label>
+                        <select class="w-full px-3 py-2 bg-surface-container border border-outline-variant rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-secondary">
+                            <option>Tomato (Solanum lycopersicum)</option>
+                            <option>Maize / Corn (Zea mays)</option>
+                            <option>Potato (Solanum tuberosum)</option>
+                            <option>Rice Paddy (Oryza sativa)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-primary mb-1">Field Parcel Size</label>
+                        <input type="text" value="4.5 Acres (Kharif)" class="w-full px-3.5 py-2 bg-surface-container border border-outline-variant rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-secondary">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-primary mb-1">Field Sector Identifier</label>
+                    <input type="text" value="Sector A-12 North (Sensor Node #4)" class="w-full px-3.5 py-2 bg-surface-container border border-outline-variant rounded-xl text-xs font-bold text-primary focus:outline-none focus:ring-2 focus:ring-secondary">
+                </div>
+                <button type="submit" class="w-full bg-secondary hover:bg-[#005236] text-white py-3 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95 mt-2">
+                    Activate Farm & Launch Ecosystem 🎉
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. Account Created Success Modal -->
+    <div id="modal-success" class="hidden fixed inset-0 z-50 bg-[#012d1d]/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl border border-outline-variant/60 shadow-2xl w-full max-w-md p-8 relative text-center overflow-hidden">
+            <div id="confetti-holder" class="absolute inset-0 pointer-events-none"></div>
+            <div class="w-16 h-16 bg-secondary-container rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                <span class="material-symbols-outlined text-on-secondary-container text-4xl" style="font-variation-settings: 'wght' 600;">check_circle</span>
+            </div>
+            <h3 class="text-2xl font-extrabold text-primary mb-2">Welcome, Rajappa!</h3>
+            <p class="text-xs text-on-surface-variant leading-relaxed mb-6">
+                Your farm profile and telemetry sensors are active. AgriScan Pro is ready to diagnose crop leaf pathologies and calculate targeted recovery plans.
+            </p>
+            <div class="space-y-2.5">
+                <button onclick="closeAllModals(); switchNavTab('dashboard');" class="w-full bg-primary hover:bg-[#002114] text-white py-3.5 rounded-xl font-bold text-xs shadow-md transition-all active:scale-95">
+                    Enter Dashboard →
+                </button>
+                <button onclick="closeAllModals(); switchNavTab('scan');" class="w-full border-2 border-secondary text-secondary hover:bg-secondary-container py-3 rounded-xl font-bold text-xs transition-all active:scale-95">
+                    Start Your First Leaf Scan
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ==================== CAMERA VIEWFINDER SIMULATOR MODAL ==================== -->
     <div id="camera-modal" class="hidden fixed inset-0 z-50 bg-[#012d1d]/95 backdrop-blur-md flex flex-col items-center justify-center p-4 text-white text-center">
@@ -1204,7 +1469,12 @@
 
     <!-- ==================== MOBILE BOTTOM NAVIGATION BAR ==================== -->
     <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-outline-variant flex justify-around items-center py-2 px-1 shadow-lg">
-        <button onclick="switchNavTab('dashboard')" id="mob-nav-dashboard" class="flex flex-col items-center gap-0.5 text-primary px-2 py-1">
+        <button onclick="switchNavTab('launchpad')" id="mob-nav-launchpad" class="flex flex-col items-center gap-0.5 text-primary px-2 py-1">
+            <span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+            <span class="text-[10px] font-bold">Hub</span>
+        </button>
+
+        <button onclick="switchNavTab('dashboard')" id="mob-nav-dashboard" class="flex flex-col items-center gap-0.5 text-on-surface-variant px-2 py-1">
             <span class="material-symbols-outlined text-[20px]">grid_view</span>
             <span class="text-[10px] font-bold">Home</span>
         </button>
@@ -1302,7 +1572,7 @@
 
         // Current Application State
         let currentLanguage = 'en';
-        let currentActiveTab = 'dashboard';
+        let currentActiveTab = 'launchpad';
         let currentDiagnostic = CROPS_DATABASE['Tomato Late Blight'];
         let scanHistory = [
             {
@@ -1366,20 +1636,20 @@
             if (targetSec) targetSec.classList.add('active');
 
             // Update Desktop Sidebar Buttons
-            const tabButtons = ['dashboard', 'scan', 'diagnosis', 'treatment', 'history', 'launchpad'];
+            const tabButtons = ['launchpad', 'dashboard', 'scan', 'diagnosis', 'treatment', 'history'];
             tabButtons.forEach(name => {
                 const btn = document.getElementById('nav-btn-' + name);
                 if (btn) {
                     if (name === tabName) {
-                        btn.className = "w-full text-left font-bold rounded-xl px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98] bg-primary-container text-on-primary-container shadow-sm";
+                        btn.className = "w-full text-left font-bold rounded-xl px-4 py-2.5 flex items-center gap-3 transition-all active:scale-[0.98] bg-primary-container text-on-primary-container shadow-sm";
                     } else {
-                        btn.className = "w-full text-left font-bold rounded-xl px-4 py-3 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container";
+                        btn.className = "w-full text-left font-bold rounded-xl px-4 py-2.5 flex items-center gap-3 transition-all active:scale-[0.98] text-on-surface-variant hover:bg-secondary-container hover:text-on-secondary-container";
                     }
                 }
             });
 
             // Update Mobile Bottom Nav Buttons
-            ['dashboard', 'scan', 'diagnosis', 'treatment', 'history'].forEach(name => {
+            ['launchpad', 'dashboard', 'scan', 'diagnosis', 'treatment', 'history'].forEach(name => {
                 const mobBtn = document.getElementById('mob-nav-' + name);
                 if (mobBtn) {
                     if (name === tabName) {
@@ -1392,18 +1662,69 @@
 
             // Update Header Title
             const titles = {
+                launchpad: 'AgriScan Pro Launchpad Hub',
                 dashboard: 'AgriScan Pro Dashboard',
                 scan: 'Crop Diagnostic Scan Portal',
                 diagnosis: 'AI Pathology & Neural Diagnosis',
                 treatment: 'Agricultural Treatment Guides & Dosage',
-                history: 'Field Diagnostic History Ledger',
-                launchpad: 'AgriScan Pro System Launchpad'
+                history: 'Field Diagnostic History Ledger'
             };
             const heading = document.getElementById('page-title-heading');
             if (heading) heading.textContent = titles[tabName] || 'AgriScan Pro';
 
             // Scroll to top of main container
             document.querySelector('main').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── Onboarding Modals Management ──────────────────────────────────────
+        function openOnboardingModal(type) {
+            closeAllModals();
+            const modal = document.getElementById('modal-' + type);
+            if (modal) {
+                modal.classList.remove('hidden');
+                if (type === 'success') {
+                    triggerConfetti();
+                }
+            }
+        }
+
+        function closeOnboardingModal(type) {
+            const modal = document.getElementById('modal-' + type);
+            if (modal) modal.classList.add('hidden');
+        }
+
+        function closeAllModals() {
+            ['login', 'otp', 'farm', 'success'].forEach(type => {
+                const m = document.getElementById('modal-' + type);
+                if (m) m.classList.add('hidden');
+            });
+        }
+
+        function autofillDemoOtp() {
+            const inputs = document.querySelectorAll('#otp-inputs-wrapper input');
+            const demo = ['8', '4', '7', '2', '9', '1'];
+            inputs.forEach((inp, idx) => {
+                inp.value = demo[idx] || '';
+            });
+            showToast('Demo OTP 847291 filled', 'info');
+        }
+
+        function triggerConfetti() {
+            const container = document.getElementById('confetti-holder');
+            if (!container) return;
+            container.innerHTML = '';
+            const colors = ['#1B4332', '#116C4A', '#86D7AD', '#A1F4C8', '#FFDBCF', '#BA1A1A'];
+            for (let i = 0; i < 40; i++) {
+                const div = document.createElement('div');
+                div.className = 'confetti';
+                div.style.left = `${Math.random() * 100}%`;
+                div.style.top = `${Math.random() * 80}%`;
+                div.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                div.style.width = `${Math.random() * 8 + 4}px`;
+                div.style.height = `${Math.random() * 12 + 6}px`;
+                div.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(div);
+            }
         }
 
         // ── Toast Notification Helper ─────────────────────────────────────────
@@ -1505,7 +1826,6 @@
         }
 
         function fallbackLocalDiagnostic(imgDataUrl) {
-            // Intelligent fallback choosing best match
             const sample = CROPS_DATABASE['Tomato Late Blight'];
             executeScanFlow(imgDataUrl, sample);
         }
@@ -1969,10 +2289,10 @@
         window.addEventListener('DOMContentLoaded', () => {
             // Check hash in URL for direct tab linking
             const hash = window.location.hash.replace('#', '');
-            if (hash && ['dashboard', 'scan', 'diagnosis', 'treatment', 'history', 'launchpad'].includes(hash)) {
+            if (hash && ['launchpad', 'dashboard', 'scan', 'diagnosis', 'treatment', 'history'].includes(hash)) {
                 switchNavTab(hash);
             } else {
-                switchNavTab('dashboard');
+                switchNavTab('launchpad');
             }
 
             renderHistory();
